@@ -1,0 +1,45 @@
+aid: gloo
+name: Gloo
+description: >-
+  Gloo Edge is an open-source, Envoy-based API gateway from Solo.io built for
+  microservices and cloud-native applications, offering advanced traffic
+  management, security, and observability for Kubernetes environments.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - API Gateway
+  - Envoy
+  - Kubernetes
+  - Open Source
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/gloo/refs/heads/main/apis.yml
+created: '2026-03-18'
+modified: '2026-03-18'
+specificationVersion: '0.19'
+apis:
+  - aid: gloo:gloo
+    name: Gloo Edge
+    description: >-
+      Gloo Edge is a feature-rich, Kubernetes-native ingress controller and
+      API gateway built on Envoy Proxy, supporting advanced routing,
+      security policies, and observability for cloud-native workloads.
+    humanURL: https://www.solo.io/products/gloo-gateway/
+    tags:
+      - API Gateway
+      - Envoy
+      - Kubernetes
+    properties:
+      - type: Documentation
+        url: https://docs.solo.io/gloo-edge/latest/
+      - type: Getting Started
+        url: https://docs.solo.io/gloo-edge/latest/getting_started/
+common:
+  - type: Website
+    url: https://www.solo.io/products/gloo-gateway/
+  - type: Documentation
+    url: https://docs.solo.io/gloo-edge/latest/
+  - type: GitHub Organization
+    url: https://github.com/solo-io/gloo
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
