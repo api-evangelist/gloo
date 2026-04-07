@@ -57,9 +57,9 @@ apis:
     baseURL: https://docs.solo.io/gateway/latest/
     tags:
       - API Gateway
-      - Kubernetes Gateway API
-      - Envoy
       - Cloud Native
+      - Envoy
+      - Kubernetes Gateway API
     properties:
       - type: Documentation
         url: https://docs.solo.io/gateway/latest/
@@ -82,10 +82,10 @@ apis:
     humanURL: https://www.solo.io/products/gloo-mesh/
     baseURL: https://docs.solo.io/gloo-mesh-enterprise/latest/
     tags:
-      - Service Mesh
       - Istio
-      - Multi-Cluster
       - Kubernetes
+      - Multi-Cluster
+      - Service Mesh
     properties:
       - type: Documentation
         url: https://docs.solo.io/gloo-mesh-enterprise/latest/
@@ -106,9 +106,9 @@ apis:
     humanURL: https://www.solo.io/products/gloo-portal/
     baseURL: https://docs.solo.io/portal/latest/
     tags:
-      - Developer Portal
-      - API Management
       - API Discovery
+      - API Management
+      - Developer Portal
       - Kubernetes
     properties:
       - type: Documentation
