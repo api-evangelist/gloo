@@ -7,6 +7,8 @@ description: >-
   Kubernetes and cloud-native environments.
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+access: 3rd-Party
+position: Consumer
 tags:
   - API Gateway
   - Envoy
@@ -16,7 +18,7 @@ tags:
 url: >-
   https://raw.githubusercontent.com/api-evangelist/gloo/refs/heads/main/apis.yml
 created: '2026-03-18'
-modified: '2026-03-18'
+modified: '2026-04-28'
 specificationVersion: '0.19'
 apis:
   - aid: gloo:gloo-edge
