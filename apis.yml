@@ -39,11 +39,11 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.solo.io/gloo-edge/latest/
-      - type: Getting Started
+      - type: GettingStarted
         url: https://docs.solo.io/gloo-edge/latest/getting_started/
       - type: Reference
         url: https://docs.solo.io/gloo-edge/latest/reference/
-      - type: Change Log
+      - type: ChangeLog
         url: https://docs.solo.io/gloo-edge/latest/changelog/
       - type: GitHubRepository
         url: https://github.com/solo-io/gloo
@@ -65,11 +65,11 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.solo.io/gateway/latest/
-      - type: Getting Started
+      - type: GettingStarted
         url: https://docs.solo.io/gateway/latest/quickstart/
       - type: Reference
         url: https://docs.solo.io/gateway/latest/reference/
-      - type: Change Log
+      - type: ChangeLog
         url: https://docs.solo.io/gateway/latest/changelog/
       - type: GitHubRepository
         url: https://github.com/solo-io/gloo
@@ -91,11 +91,11 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.solo.io/gloo-mesh-enterprise/latest/
-      - type: Getting Started
+      - type: GettingStarted
         url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
       - type: Reference
         url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
-      - type: Change Log
+      - type: ChangeLog
         url: https://docs.solo.io/gloo-mesh-enterprise/latest/changelog/
   - aid: gloo:gloo-portal
     name: Gloo Portal
@@ -115,7 +115,7 @@ apis:
     properties:
       - type: Documentation
         url: https://docs.solo.io/portal/latest/
-      - type: Getting Started
+      - type: GettingStarted
         url: https://docs.solo.io/portal/latest/getting_started/
       - type: Reference
         url: https://docs.solo.io/portal/latest/reference/
@@ -126,23 +126,23 @@ common:
     url: https://www.solo.io/products/
   - type: Documentation
     url: https://docs.solo.io/
-  - type: Getting Started
+  - type: GettingStarted
     url: https://docs.solo.io/gloo-edge/latest/getting_started/
   - type: Blog
     url: https://www.solo.io/blog/
-  - type: GitHub Organization
+  - type: GitHubOrganization
     url: https://github.com/solo-io
   - type: GitHubRepository
     url: https://github.com/solo-io/gloo
-  - type: Change Log
+  - type: ChangeLog
     url: https://github.com/solo-io/gloo/releases
   - type: Community
     url: https://slack.solo.io/
   - type: Support
     url: https://www.solo.io/company/contact/
-  - type: Terms of Service
+  - type: TermsOfService
     url: https://www.solo.io/legal/terms-of-service/
-  - type: Privacy Policy
+  - type: PrivacyPolicy
     url: https://www.solo.io/legal/privacy-policy/
   - type: Integrations
     url: https://www.solo.io/partners
