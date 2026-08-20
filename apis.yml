@@ -25,6 +25,12 @@ tags:
   - API Gateway
   - Envoy
   - Kubernetes
+  - Open-Source
+  - Service Mesh
+tags_raw:
+  - API Gateway
+  - Envoy
+  - Kubernetes
   - Open Source
   - Service Mesh
 url: >-
@@ -44,6 +50,11 @@ apis:
     humanURL: https://www.solo.io/products/gloo-gateway/
     baseURL: https://docs.solo.io/gloo-edge/latest/
     tags:
+      - API Gateway
+      - Envoy
+      - Kubernetes
+      - Open-Source
+    tags_raw:
       - API Gateway
       - Envoy
       - Kubernetes
@@ -70,6 +81,11 @@ apis:
     humanURL: https://www.solo.io/products/gloo-gateway/
     baseURL: https://docs.solo.io/gateway/latest/
     tags:
+      - API Gateway
+      - Cloud-Native
+      - Envoy
+      - Kubernetes Gateway API
+    tags_raw:
       - API Gateway
       - Cloud Native
       - Envoy
