@@ -1,0 +1,47 @@
+generated: '2026-09-12'
+method: searched
+source: https://trust.solo.io/
+provider: Gloo
+providerId: gloo
+description: >-
+  Solo.io operates a public trust center at https://trust.solo.io/, hosted on Vanta. The page
+  returns HTTP 200 and is linked from https://www.solo.io/security and from the Solo.io site
+  footer. Its substance is rendered entirely client-side, so no certification, audit report or
+  control list could be read from the served HTML on 2026-09-12 — only the canonical title
+  ("Solo Trust Center") and the company description in the meta tags. Certifications are
+  therefore recorded as UNVERIFIED rather than asserted: this pipeline does not claim a
+  certification it could not read.
+trust_center:
+  url: https://trust.solo.io/
+  http_status: 200
+  platform: Vanta
+  platform_evidence: >-
+    Served HTML carries data-signature-manifest-url https://assets.vanta.com/static/... and
+    og:image https://app.vanta.com/doc?s=... — the standard Vanta Trust Center shell.
+  machine_readable: false
+  javascript_rendered: true
+  documents_require_request: unknown
+certifications: []
+certifications_note: >-
+  No SOC 2, ISO 27001, PCI DSS, HIPAA, FedRAMP or GDPR attestation could be confirmed from any
+  served document. Neither https://www.solo.io/security nor the trust center HTML names one,
+  and the Vanta SPA catch-all answers HTTP 200 with the same shell for every path, so no API
+  endpoint on that host yields the control list either.
+related:
+  - type: SecurityPolicy
+    url: https://www.solo.io/security
+  - type: PrivacyPolicy
+    url: https://legal.solo.io/#privacy-policy
+  - type: DataProcessingAgreement
+    url: https://legal.solo.io/#subscriber-dpa
+  - type: Subprocessors
+    url: https://legal.solo.io/#subprocessors
+evidence:
+  - url: https://trust.solo.io/
+    status: 200
+    fetched: '2026-09-12'
+    note: 6,607-byte HTML shell; body rendered client-side by Vanta.
+  - url: https://trust.solo.io/.well-known/security.txt
+    status: 200
+    fetched: '2026-09-12'
+    note: FALSE POSITIVE — SPA catch-all returns the identical HTML shell for every path, not a document.

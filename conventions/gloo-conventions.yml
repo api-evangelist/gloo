@@ -1,0 +1,189 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  Derived from the four published Solo.io OpenAPI contracts in openapi/ (39 operations, every
+  parameter, response and schema read on 2026-09-12), cross-checked against the Gloo Portal
+  documentation at https://docs.solo.io/gateway/latest/portal/ and the Portal Server API
+  reference at https://docs.solo.io/gateway/latest/portal/openapi/.
+docs: https://docs.solo.io/gateway/latest/portal/openapi/
+provider: Gloo
+providerId: gloo
+description: >-
+  Cross-cutting runtime semantics of the Gloo HTTP surface — the Gloo Portal server API, its
+  Gloo Platform predecessor, the Gloo Portal IdP Connect API, and the AI Gateway guardrail
+  webhook. Gloo is software the customer deploys, not a hosted SaaS, so several of the
+  conventions an agent would look for on a SaaS API (a single production base URL, published
+  rate limits, a status page) are operator-owned by design. That is recorded below as a fact
+  about the deployment model, not as a gap Solo.io could close by writing more documentation.
+deployment_model: >-
+  Self-hosted. The Portal server runs in the customer's Kubernetes cluster; Solo's own spec
+  uses http://portal.example.com/v1 as the server URL and instructs the reader to "update the
+  server URL to the host that you exposed the backend portal server on". The older Gloo
+  Platform Portal spec names https://api.gloo-platform-portal.com/v1, a host that does not
+  resolve — it is illustrative, not live.
+auth:
+  style: OIDC id token in a cookie (`id_token`), declared as an apiKey/cookie securityScheme
+  bearer_tokens: false
+  api_keys_for_this_api: false
+  anonymous_access: >-
+    Supported and explicitly declared. GetCurrentUser, ListAPIs, GetApiSchema and GetUsagePlans
+    carry `security: [{identityToken: []}, {}]` because a portal may be configured for public
+    catalog browsing.
+  see: authentication/gloo-authentication.yml
+idempotency:
+  supported: false
+  coverage: none
+  header: null
+  scope: []
+  retention: null
+  detail: >-
+    There is no Idempotency-Key header, no idempotency parameter, and no idempotency language
+    anywhere in the four contracts or in the Portal documentation. Of the 39 operations, 21 are
+    mutating (POST/PUT/DELETE) and none of them offers replay protection. The nearest thing is
+    uniqueness-on-name: five CREATE operations return 409 Conflict when a resource with the
+    same name already exists (CreateApplicationAPIKey, GenerateApplicationOAuthCredential,
+    SubscribeToApiProduct, CreateTeam, CreateTeamApplication). That prevents a duplicate, but
+    it is not idempotency — the retry returns a conflict instead of the original resource, so
+    the caller must then GET it separately. The two PUT operations (UpdateApplication,
+    UpdateTeam) and UpsertCurrentUser are naturally idempotent by virtue of being full
+    replacements, and all eight DELETEs are idempotent in effect (a second delete 404s).
+  agent_guidance: >-
+    Treat every POST as at-most-once. On a 5xx from a create, do NOT blind-retry: list the
+    parent collection first and check whether the resource landed.
+pagination:
+  supported: false
+  style: none
+  params: []
+  response_fields: []
+  detail: >-
+    No pagination exists anywhere in the surface. Across all 39 operations the only query
+    parameters are `status` (ListSubscriptionsByStatus) and `usagePlans` (ListAPIKeys); there
+    is no limit, offset, page, cursor, after or next. Every list operation returns the whole
+    collection in one unbounded array. ListApiProducts and ListTeams additionally return 404
+    rather than an empty 200 when the collection is empty.
+filtering:
+  supported: partial
+  params:
+    - name: status
+      operation: ListSubscriptionsByStatus
+      note: Filters subscriptions by approval status. An unrecognised value returns 400 "Invalid status parameter."
+    - name: usagePlans
+      operation: ListAPIKeys
+      note: Gloo Platform Portal only. Required — omitting it returns 400 "Bad request. Please supply usage plan Ids".
+field_expansion:
+  supported: false
+  detail: No expand/include/fields parameter. Related objects are fetched with a second call (e.g. GetApplicationById then ListApplicationAPIKeys).
+metadata:
+  supported: true
+  detail: >-
+    Free-form metadata objects are first-class on three entities. APIKey.metadata,
+    ApplicationMetadata and SubscriptionMetadata are all typed as open objects, and APIProduct
+    carries apiProductMetadata. This is the extension point for operator-specific attributes.
+request_tracing:
+  request_id_header: null
+  detail: >-
+    No request-id, trace-id or correlation-id header is declared in any contract. Because Gloo
+    IS a gateway, the operator can and usually does attach tracing at the gateway layer
+    (Datadog, OpenTelemetry, Zipkin and OpenCensus tracing providers all ship as first-party
+    config in projects/gloo/api/external/envoy/config/trace/v3/*.proto), but none of that is
+    promised by the Portal API contract itself.
+versioning:
+  style: URL path
+  current: v1
+  detail: >-
+    All server URLs end in /v1 and every info.version is 1.0.0. There is no version header, no
+    date-based version, and no declared deprecation of a prior version at the HTTP layer. The
+    products themselves version on a separate track (Gloo 1.22.x; Solo Enterprise for kgateway
+    2.x) — see lifecycle/gloo-lifecycle.yml.
+error_envelope:
+  format: none
+  detail: >-
+    No RFC 9457. Only the IdP Connect contract defines an error schema (`Error` with required
+    code/message/reason) and only the guardrail webhook defines a validation envelope
+    (HTTPValidationError). The two Portal contracts declare 142 error responses with prose
+    descriptions and no body schema at all.
+  see: errors/gloo-problem-types.yml
+rate_limit_signaling:
+  headers: []
+  status_on_exhaustion: null
+  detail: >-
+    No 429 is declared on any of the 39 operations and no RateLimit-*/X-RateLimit-*/Retry-After
+    header appears in any contract. Rate limiting is nevertheless a first-class CONCEPT in the
+    data model — UsagePlan.rateLimitPolicy and the RateLimit schema carry
+    {requestsPerUnit, unit: SECOND|MINUTE|HOUR|DAY|MONTH|YEAR} — but those describe the limits
+    the portal applies to the APIs it fronts, configured by the operator, not limits on the
+    Portal API itself.
+  see: rate-limits/gloo-rate-limits.yml
+reversibility:
+  grade: documented
+  grade_basis: >-
+    Every create in the surface has a matching delete with a real operationId, so the reversal
+    path is documented. NOT ONE of them states a window — no retention period, no grace period,
+    no soft-delete-then-purge language appears in the contracts or the Portal documentation —
+    so this cannot be graded `verified`. No window is asserted here that Solo.io does not state.
+  write_surface_operations: 21
+  reversals:
+    - action: CreateApplicationAPIKey
+      reversal: DeleteAPIKey
+      window: null
+      window_source: null
+      note: >-
+        Deleting the key revokes it. The plaintext key is returned only once at creation and is
+        not recoverable, so a delete is effectively permanent for that key material.
+    - action: GenerateApplicationOAuthCredential
+      reversal: DeleteOAuthCredential
+      window: null
+      window_source: null
+      note: >-
+        The client secret is not stored in the Portal database; Solo's docs direct an
+        administrator to the OIDC provider to recover one. Deletion is therefore irreversible
+        from the Portal's side.
+    - action: CreateOAuthApplication
+      reversal: DeleteOAuthApplication
+      window: null
+      window_source: null
+      note: Gloo Portal IdP Connect. Deletes the OAuth2 client in the upstream OIDC provider.
+    - action: SubscribeToApiProduct
+      reversal: DeleteApplicationProductSubscription
+      window: null
+      window_source: null
+      note: >-
+        A subscription may be pending approval; the Subscription schema carries approved /
+        approvedAt / rejected. There is no un-approve or un-reject operation — only delete.
+    - action: CreateTeam
+      reversal: DeleteTeam
+      window: null
+      window_source: null
+      note: >-
+        Guarded, not windowed. DeleteTeam returns 400 "The team has users or apps associated
+        with it" until the team is emptied, so the reversal is multi-step.
+    - action: CreateTeamApplication
+      reversal: DeleteApplication
+      window: null
+      window_source: null
+    - action: AddTeamMember
+      reversal: RemoveTeamMember
+      window: null
+      window_source: null
+  irreversible:
+    - operation: UpdateApplication
+      reason: Full-replacement PUT. No version history, no restore, no previous-state read.
+    - operation: UpdateTeam
+      reason: Full-replacement PUT. No version history, no restore.
+    - operation: UpsertCurrentUser
+      reason: No delete-user or revert operation exists in the contract.
+dry_run_mode:
+  supported: false
+  detail: >-
+    No dry-run, validate-only or preview parameter exists on the HTTP surface. It is worth
+    noting that Gloo DOES ship a validation capability one layer down — the GlooValidationService
+    gRPC service (grpc/gloo-gloo-validation.proto) exposes a `Validate` RPC that accepts Gloo
+    resources and returns a validation report without applying them, and `glooctl check`
+    exercises the same path from the CLI. That is configuration validation for the gateway, not
+    a dry run for the Portal API.
+cross_links:
+  - authentication/gloo-authentication.yml
+  - errors/gloo-problem-types.yml
+  - lifecycle/gloo-lifecycle.yml
+  - rate-limits/gloo-rate-limits.yml
+  - data-model/gloo-data-model.yml

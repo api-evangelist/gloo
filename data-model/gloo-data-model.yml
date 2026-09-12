@@ -1,0 +1,189 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  openapi/gloo-portal-server-openapi.yaml (18 schemas, 28 operations) and
+  openapi/gloo-platform-portal-openapi.yaml (7 schemas), read on 2026-09-12. Relationships are
+  taken from declared $ref links and from id-reference fields (apiProductId, applicationId,
+  teamId, userId) — not inferred from names alone.
+provider: Gloo
+providerId: gloo
+description: >-
+  Entity-relationship graph of the Gloo Portal domain — the object model an API consumer
+  navigates in a Gloo developer portal. The spine is Team → Application → (APIKey |
+  OAuthCredential | Subscription) → APIProduct → ProductVersion, with UsagePlan and
+  RateLimitPolicy attached on the Gloo Platform side. There is no $ref graph at all in the
+  other two contracts: the IdP Connect API has two flat schemas and the guardrail webhook is a
+  message-passing contract, not a resource model.
+id_conventions:
+  style: UUID
+  prefixes: false
+  note: >-
+    Ids are bare UUIDs with no type prefix — APIKey.id example
+    "ae8261d2-4e16-4a06-b1f3-1af71464a8dd", APIKey.apiKey example
+    "4f357f4f-cd56-41d2-aca8-301c999bb8a4". An agent holding an id cannot tell what kind of
+    object it names, so ids must always be carried with their type. One exception: the Gloo
+    Platform UsagePlan.apiIds examples are composite strings of the form
+    "<api>-<namespace>-<cluster>" (e.g. "petstoreAPI-petstoreNamespace-cluster-1"), which
+    encode the Kubernetes coordinates of the API.
+base_entity:
+  name: BaseEntity
+  note: >-
+    Four entities (APIKey, APIProduct, Application, Subscription, Team and User all compose it
+    via allOf) inherit a shared BaseEntity. It is the closest thing the model has to a common
+    envelope.
+entities:
+  - name: User
+    source: gloo-portal-server, gloo-platform-portal
+    operations: [GetCurrentUser, UpsertCurrentUser, ListTeamMembers, AddTeamMember, RemoveTeamMember]
+    note: The portal consumer, identified by the OIDC id token. There is no delete-user operation.
+  - name: Team
+    source: gloo-portal-server
+    operations: [ListTeams, CreateTeam, GetTeamById, UpdateTeam, DeleteTeam]
+    note: Owns applications and members. Cannot be deleted while it still has either (400).
+  - name: Application
+    source: gloo-portal-server
+    operations: [CreateTeamApplication, ListTeamApplications, GetApplicationById, UpdateApplication, DeleteApplication]
+    note: The credential-holding unit. Keys, OAuth credentials and subscriptions all hang off it.
+  - name: APIKey
+    source: gloo-portal-server, gloo-platform-portal
+    operations: [CreateApplicationAPIKey, ListApplicationAPIKeys, DeleteAPIKey, ListAPIKeys, CreateAPIKey]
+    note: The `apiKey` value is returned only once, at creation. Carries a free-form metadata object.
+  - name: OAuthCredential
+    source: gloo-portal-server
+    operations: [GenerateApplicationOAuthCredential, GetApplicationOAuthCredential, DeleteOAuthCredential]
+    note: Client secret is not stored by the Portal; it lives in the OIDC provider.
+  - name: OAuthApplication
+    source: gloo-portal-idp-connect
+    operations: [CreateOAuthApplication, DeleteOAuthApplication]
+    note: >-
+      The same concept expressed by a DIFFERENT service. IdP Connect creates the client in the
+      OIDC provider; the Portal server records the credential. The two models are joined by the
+      operator's deployment, not by a $ref.
+  - name: Subscription
+    source: gloo-portal-server
+    operations: [SubscribeToApiProduct, ListApplicationProductSubscriptions, ListSubscriptionsByStatus, DeleteApplicationProductSubscription]
+    note: >-
+      Carries an approval workflow as flat booleans plus timestamps (approved, approvedAt,
+      rejected) rather than a status enum on the resource; the status enum exists only as a
+      query parameter on ListSubscriptionsByStatus.
+  - name: APIProduct
+    source: gloo-portal-server
+    operations: [ListApiProducts, GetApiProductById, ListProductVersions]
+    note: The publishable unit. Has a summary projection (APIProductSummary) used in list responses.
+  - name: ProductVersion
+    source: gloo-portal-server
+    operations: [ListProductVersions]
+  - name: UsagePlan
+    source: gloo-platform-portal
+    operations: [GetUsagePlans]
+    note: Bundles authPolicies + a rateLimitPolicy + the apiIds the plan covers.
+  - name: RateLimitPolicy
+    source: gloo-platform-portal
+    note: '{ unit: SECOND|MINUTE|HOUR|DAY|MONTH|YEAR, requestsPerUnit }'
+  - name: RateLimit
+    source: gloo-portal-server
+    note: >-
+      Same shape as RateLimitPolicy but requestsPerUnit is typed `string` here and `integer`
+      on the Gloo Platform side — a real type divergence between the two published contracts.
+  - name: AuthPolicy
+    source: gloo-platform-portal
+  - name: API
+    source: gloo-platform-portal
+    operations: [ListAPIs, GetApiSchema]
+relationships:
+  - from: Team
+    to: User
+    type: has_many
+    via: team membership (ListTeamMembers / AddTeamMember / RemoveTeamMember on /teams/{teamId}/members)
+  - from: Team
+    to: Application
+    type: has_many
+    via: /teams/{teamId}/apps
+  - from: Application
+    to: Team
+    type: belongs_to
+    via: path nesting under /teams/{teamId}/apps
+  - from: Application
+    to: APIKey
+    type: has_many
+    via: /apps/{appId}/api-keys
+  - from: Application
+    to: OAuthCredential
+    type: has_many
+    via: /apps/{appId}/oauth-credentials
+  - from: Application
+    to: Subscription
+    type: has_many
+    via: /apps/{appId}/subscriptions
+  - from: Subscription
+    to: Application
+    type: belongs_to
+    via: Subscription.applicationId (readOnly)
+  - from: Subscription
+    to: APIProduct
+    type: belongs_to
+    via: Subscription.apiProductId
+  - from: APIProduct
+    to: ProductVersion
+    type: has_many
+    via: /api-products/{productId}/versions
+  - from: APIProduct
+    to: APIProductSummary
+    type: projection
+    via: $ref in list responses
+  - from: UsagePlan
+    to: RateLimitPolicy
+    type: has_one
+    via: UsagePlan.rateLimitPolicy ($ref)
+  - from: UsagePlan
+    to: AuthPolicy
+    type: has_many
+    via: UsagePlan.authPolicies[] ($ref)
+  - from: UsagePlan
+    to: API
+    type: has_many
+    via: UsagePlan.apiIds[]
+  - from: APIKey
+    to: UsagePlan
+    type: filtered_by
+    via: the `usagePlans` query parameter on ListAPIKeys (Gloo Platform)
+  - from: APIKey
+    to: BaseEntity
+    type: inherits
+    via: allOf
+  - from: APIProduct
+    to: BaseEntity
+    type: inherits
+    via: allOf
+  - from: Application
+    to: BaseEntity
+    type: inherits
+    via: allOf
+  - from: Subscription
+    to: BaseEntity
+    type: inherits
+    via: allOf
+  - from: Team
+    to: BaseEntity
+    type: inherits
+    via: allOf
+  - from: User
+    to: BaseEntity
+    type: inherits
+    via: allOf
+divergences:
+  - >-
+    RateLimit.requestsPerUnit is `string` in the Gloo Portal Server contract and `integer` in
+    the Gloo Platform Portal contract. Same field, same meaning, different type — a client
+    written against one will mis-parse the other.
+  - >-
+    The two portal contracts model the same domain at different granularities. Gloo Platform
+    Portal is user-centric and flat (/me, /apis, /api-keys, /usage-plans). Gloo Portal Server
+    is team-centric and nested (/teams/{teamId}/apps/{appId}/api-keys). The newer contract
+    added Team, Application, APIProduct, ProductVersion, Subscription and OAuthCredential and
+    dropped API, UsagePlan, AuthPolicy and RateLimitPolicy.
+counts:
+  entities: 14
+  relationships: 20
+  contracts_with_a_resource_model: 2
+  contracts_without: 2

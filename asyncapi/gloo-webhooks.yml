@@ -1,0 +1,111 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml (harvested verbatim from
+  https://github.com/solo-io/gloo-gateway-use-cases/blob/main/ai-guardrail-webhook-server/docs/gloo-ai-gateway-guardrail-webhook-openapi.yaml),
+  plus a GitHub code search across the solo-io organization for AsyncAPI documents on
+  2026-09-12 (0 results).
+provider: Gloo
+providerId: gloo
+description: >-
+  Gloo's event surface is callout-shaped, not publish-subscribe. Solo.io ships NO AsyncAPI
+  document anywhere in its organization, and no event bus, no message broker contract and no
+  outbound notification webhooks from a Solo-operated service — which is expected, since Gloo
+  runs in the customer's cluster and there is no Solo.io control plane to emit events from.
+  What Solo.io DOES publish, and publishes well, is an inbound webhook contract: the AI Gateway
+  GuardRail Webhook, a formal OpenAPI 3.1.0 specification of the two endpoints an operator
+  implements so that kgateway / agentgateway / Gloo Gateway can call out to them on every LLM
+  request and response.
+asyncapi:
+  published: false
+  searched:
+    - query: asyncapi org:solo-io (GitHub code search)
+      results: 0
+    - url: https://docs.solo.io/
+      note: No event catalog, streaming reference or message-broker contract in the documentation.
+  note: >-
+    N/A rather than a gap. Gloo is deployed software with no vendor-hosted event stream. This
+    is NOT a case of a provider having events and failing to document them.
+webhooks:
+  published: true
+  direction: inbound
+  direction_note: >-
+    The provider's product calls the CUSTOMER's endpoint. This is the reverse of the usual SaaS
+    webhook (where the vendor posts events to a customer URL), and it is why the contract has
+    no servers[] block — the operator supplies the host.
+  contract: openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml
+  contract_format: OpenAPI 3.1.0
+  docs: https://docs.solo.io/gateway/latest/ai/
+  transport: HTTP POST, application/json
+  authentication: >-
+    None declared. The contract specifies no securityScheme; protecting the webhook endpoint is
+    the operator's responsibility.
+  signature_verification: null
+  signature_note: >-
+    No signing secret, no HMAC header, no timestamp-replay protection is declared. An operator
+    implementing this contract must authenticate the caller by network policy or their own
+    mechanism.
+  retry_policy: null
+  delivery_guarantee: null
+  events:
+    - name: request
+      path: /request
+      method: POST
+      operationId: process_prompts_request_post
+      summary: Process Prompts
+      description: >-
+        Intercepts a user request BEFORE it is sent to the LLM. Receives prompt messages
+        normalized across LLM providers, so one implementation serves every provider the
+        gateway fronts.
+      request_schema: GuardrailsPromptRequest
+      response_schema: GuardrailsPromptResponse
+      actions:
+        - PassAction — allow the request through unchanged
+        - MaskAction — modify the content by masking sensitive information
+        - RejectAction — block the content and return an error response
+      errors:
+        - status: 422
+          schema: HTTPValidationError
+    - name: response
+      path: /response
+      method: POST
+      operationId: process_responses_response_post
+      summary: Process Responses
+      description: >-
+        Intercepts the LLM's response BEFORE it is returned to the user, with the same three
+        actions available.
+      request_schema: GuardrailsResponseRequest
+      response_schema: GuardrailsResponseResponse
+      actions:
+        - PassAction
+        - MaskAction
+        - RejectAction
+      errors:
+        - status: 422
+          schema: HTTPValidationError
+  schemas:
+    - GuardrailsPromptRequest
+    - GuardrailsPromptResponse
+    - GuardrailsResponseRequest
+    - GuardrailsResponseResponse
+    - PassAction
+    - MaskAction
+    - RejectAction
+    - Message
+    - PromptMessages
+    - ResponseChoice
+    - ResponseChoices-Input
+    - ResponseChoices-Output
+    - HTTPValidationError
+    - ValidationError
+related_callout_surfaces:
+  note: >-
+    Two more callout contracts exist one layer down, as gRPC rather than HTTP webhooks. They
+    are recorded here for completeness but are configuration protobufs, not an event surface.
+  surfaces:
+    - name: External authorization (ext-auth)
+      contract: projects/gloo/api/v1/enterprise/options/extauth/v1/extauth.proto
+      note: Envoy ext_authz callout to an operator-supplied auth service.
+    - name: External processing (ext-proc)
+      contract: projects/gloo/api/v1/enterprise/options/extproc/extproc.proto
+      note: Envoy ext_proc callout for request/response mutation.

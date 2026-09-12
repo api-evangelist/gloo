@@ -1,0 +1,506 @@
+generated: '2026-09-12'
+method: derived
+status: candidate
+source: >-
+  Derived from the four published Solo.io OpenAPI contracts in openapi/ on 2026-09-12, after a
+  search for a published Solo.io MCP server found none. Searched: https://www.solo.io/llms.txt
+  (which names MCP 40+ times but only as a product topic), the solo-io GitHub organization, the
+  Solo.io product pages, and live probes of https://mcp.solo.io/ and https://mcp.solo.io/mcp
+  (both fail to resolve, curl status 000) and https://docs.solo.io/mcp (404).
+provider: Gloo
+providerId: gloo
+description: >-
+  A CANDIDATE MCP tool surface derived from Solo.io's published OpenAPI contracts. Solo.io does
+  NOT ship an MCP server for its own APIs, and nothing here should be read as one. The pointer
+  in apis.yml is deliberately X-MCPServerCandidate, not MCPServer.
+  The irony is worth recording: Solo.io is one of the most prominent MCP infrastructure vendors
+  in the market — agentgateway is an AI-native gateway purpose-built for MCP traffic,
+  agentregistry is a registry for MCP servers, and solo.io runs an "MCP Academy" — yet none of
+  Solo.io's own management APIs is exposed to agents through MCP. The company builds the road;
+  it has not driven on it.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+  note: >-
+    mode is `none` because no Solo.io MCP server exists — not remote, not stdio. No endpoint is
+    guessed. If Solo.io later publishes one, this file must be re-derived by SEARCH, and the
+    pointer upgraded to MCPServer.
+search_evidence:
+  - url: https://mcp.solo.io/
+    status: '000'
+    note: Host does not resolve.
+  - url: https://mcp.solo.io/mcp
+    status: '000'
+    note: Host does not resolve.
+  - url: https://docs.solo.io/mcp
+    status: 404
+  - url: https://www.solo.io/llms.txt
+    status: 200
+    note: >-
+      40+ MCP references, all product/marketing/education content (MCP Academy, agentgateway,
+      agentregistry, "Secure your MCP servers with OAuth"). No server endpoint, no npx package,
+      no mcp.json.
+  - url: https://api.github.com/orgs/solo-io/repos
+    status: 200
+    note: >-
+      No MCP-server repository under solo-io for Solo's own APIs. Related repos found
+      (kmcp, deployment-guide-mcp-optimization-on-k8s, enterprise-mcp-flow) are tooling for
+      running OTHER people's MCP servers on Kubernetes.
+surfaces:
+  openapi:
+    - openapi/gloo-portal-server-openapi.yaml
+    - openapi/gloo-platform-portal-openapi.yaml
+    - openapi/gloo-portal-idp-connect-openapi.yaml
+    - openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml
+  graphql: null
+  mcp: null
+  grpc:
+    - grpc/gloo-gloo-validation.proto
+    - grpc/gloo-proxy-endpoint.proto
+derivation_notes:
+  - >-
+    One candidate tool per OpenAPI operation, 39 in total. Tool names are namespaced by
+    contract (gloo_portal_*, gloo_platform_portal_*, gloo_idp_connect_*, gloo_guardrail_*)
+    because GetCurrentUser and DeleteAPIKey each appear in two different contracts with
+    different paths.
+  - >-
+    Each tool's real inputSchema is the referenced operation's parameters + requestBody;
+    input_schema_source names the exact JSON Pointer rather than restating the schema here.
+  - >-
+    21 of the 39 are MUTATING and NONE of them is idempotent (no Idempotency-Key anywhere —
+    see conventions/gloo-conventions.yml). Any server built from this list should mark those
+    tools destructive and non-retryable.
+  - >-
+    The two gloo_guardrail_* tools are a different animal: they are endpoints the OPERATOR
+    implements and the gateway calls, not endpoints an agent calls. A server built from this
+    list should exclude them or clearly mark them as inbound webhooks.
+  - >-
+    The gRPC surface (GlooValidationService.Validate, .NotifyOnResync,
+    ProxyEndpointService.GetProxies) is NOT represented as tools here — the derivation is
+    OpenAPI-only, and NotifyOnResync is a server-streaming RPC with no MCP equivalent.
+tools:
+- tool: gloo_portal_delete_api_key
+  operationId: DeleteAPIKey
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: DELETE /api-keys/{keyId}
+  mutating: true
+  parameters:
+  - keyId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//api-keys/{keyId}/delete
+  description: Deletes the current user's API key(s) for a specified API ID.
+- tool: gloo_portal_list_api_products
+  operationId: ListApiProducts
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /api-products
+  mutating: false
+  parameters: []
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//api-products/get
+  description: Retrieve a list of all API product summaries accessible to user. This will return the list of summaries
+    for all API products.
+- tool: gloo_portal_get_api_product_by_id
+  operationId: GetApiProductById
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /api-products/{productId}
+  mutating: false
+  parameters:
+  - productId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//api-products/{productId}/get
+  description: Retrieve a specific API product by its ID.
+- tool: gloo_portal_list_product_versions
+  operationId: ListProductVersions
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /api-products/{productId}/versions
+  mutating: false
+  parameters:
+  - productId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//api-products/{productId}/versions/get
+  description: Retrieve all versions for a specific API product.
+- tool: gloo_portal_delete_application
+  operationId: DeleteApplication
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: DELETE /apps/{appId}
+  mutating: true
+  parameters:
+  - appId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/delete
+  description: Deletes an application
+- tool: gloo_portal_get_application_by_id
+  operationId: GetApplicationById
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /apps/{appId}
+  mutating: false
+  parameters:
+  - appId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/get
+  description: Gets an application
+- tool: gloo_portal_update_application
+  operationId: UpdateApplication
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: PUT /apps/{appId}
+  mutating: true
+  parameters:
+  - appId
+  request_body: true
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/put
+  description: Updates an application
+- tool: gloo_portal_list_application_api_keys
+  operationId: ListApplicationAPIKeys
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /apps/{appId}/api-keys
+  mutating: false
+  parameters:
+  - appId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/api-keys/get
+  description: Lists API keys for the current user, filterable by usage plans or API IDs.
+- tool: gloo_portal_create_application_api_key
+  operationId: CreateApplicationAPIKey
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: POST /apps/{appId}/api-keys
+  mutating: true
+  parameters:
+  - appId
+  request_body: true
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/api-keys/post
+  description: Creates an API key for the current user for a specific API ID and usage plan.
+- tool: gloo_portal_get_application_oauth_credential
+  operationId: GetApplicationOAuthCredential
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /apps/{appId}/oauth-credentials
+  mutating: false
+  parameters:
+  - appId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/oauth-credentials/get
+  description: Gets the OAuth client credentials for the application
+- tool: gloo_portal_generate_application_oauth_credential
+  operationId: GenerateApplicationOAuthCredential
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: POST /apps/{appId}/oauth-credentials
+  mutating: true
+  parameters:
+  - appId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/oauth-credentials/post
+  description: Generate and push application credentials to the Identity Provider
+- tool: gloo_portal_list_application_product_subscriptions
+  operationId: ListApplicationProductSubscriptions
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /apps/{appId}/subscriptions
+  mutating: false
+  parameters:
+  - appId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/subscriptions/get
+  description: Lists all app subscriptions
+- tool: gloo_portal_subscribe_to_api_product
+  operationId: SubscribeToApiProduct
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: POST /apps/{appId}/subscriptions
+  mutating: true
+  parameters:
+  - appId
+  request_body: true
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//apps/{appId}/subscriptions/post
+  description: Subscribes to an API product
+- tool: gloo_portal_get_current_user
+  operationId: GetCurrentUser
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /me
+  mutating: false
+  parameters: []
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//me/get
+  description: Gets the user for the current session.
+- tool: gloo_portal_upsert_current_user
+  operationId: UpsertCurrentUser
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: PUT /me
+  mutating: true
+  parameters: []
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//me/put
+  description: Upserts the current user
+- tool: gloo_portal_delete_oauth_credential
+  operationId: DeleteOAuthCredential
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: DELETE /oauth-credentials/{credentialId}
+  mutating: true
+  parameters:
+  - credentialId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//oauth-credentials/{credentialId}/delete
+  description: Deletes an OAuth client credential
+- tool: gloo_portal_list_subscriptions_by_status
+  operationId: ListSubscriptionsByStatus
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /subscriptions
+  mutating: false
+  parameters:
+  - status
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//subscriptions/get
+  description: List subscriptions filtered by status
+- tool: gloo_portal_delete_application_product_subscription
+  operationId: DeleteApplicationProductSubscription
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: DELETE /subscriptions/{subscriptionId}
+  mutating: true
+  parameters:
+  - subscriptionId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//subscriptions/{subscriptionId}/delete
+  description: Delete subscription
+- tool: gloo_portal_list_teams
+  operationId: ListTeams
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /teams
+  mutating: false
+  parameters: []
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/get
+  description: Lists all teams
+- tool: gloo_portal_create_team
+  operationId: CreateTeam
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: POST /teams
+  mutating: true
+  parameters: []
+  request_body: true
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/post
+  description: Creates a team
+- tool: gloo_portal_delete_team
+  operationId: DeleteTeam
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: DELETE /teams/{teamId}
+  mutating: true
+  parameters:
+  - teamId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/{teamId}/delete
+  description: Deletes a team
+- tool: gloo_portal_get_team_by_id
+  operationId: GetTeamById
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /teams/{teamId}
+  mutating: false
+  parameters:
+  - teamId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/{teamId}/get
+  description: Gets a team
+- tool: gloo_portal_update_team
+  operationId: UpdateTeam
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: PUT /teams/{teamId}
+  mutating: true
+  parameters:
+  - teamId
+  request_body: true
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/{teamId}/put
+  description: Updates a team
+- tool: gloo_portal_list_team_applications
+  operationId: ListTeamApplications
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /teams/{teamId}/apps
+  mutating: false
+  parameters:
+  - teamId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/{teamId}/apps/get
+  description: Lists all team apps
+- tool: gloo_portal_create_team_application
+  operationId: CreateTeamApplication
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: POST /teams/{teamId}/apps
+  mutating: true
+  parameters:
+  - teamId
+  request_body: true
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/{teamId}/apps/post
+  description: Creates an application
+- tool: gloo_portal_list_team_members
+  operationId: ListTeamMembers
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: GET /teams/{teamId}/members
+  mutating: false
+  parameters:
+  - teamId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/{teamId}/members/get
+  description: List of team users
+- tool: gloo_portal_add_team_member
+  operationId: AddTeamMember
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: POST /teams/{teamId}/members
+  mutating: true
+  parameters:
+  - teamId
+  request_body: true
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/{teamId}/members/post
+  description: Adds a member to a team
+- tool: gloo_portal_remove_team_member
+  operationId: RemoveTeamMember
+  api: gloo:gloo-portal
+  spec: gloo-portal-server-openapi.yaml
+  binding: DELETE /teams/{teamId}/members/{userId}
+  mutating: true
+  parameters:
+  - teamId
+  - userId
+  request_body: false
+  input_schema_source: openapi/gloo-portal-server-openapi.yaml#/paths//teams/{teamId}/members/{userId}/delete
+  description: Removes a member from a team
+- tool: gloo_platform_portal_get_current_user
+  operationId: GetCurrentUser
+  api: gloo:gloo-mesh
+  spec: gloo-platform-portal-openapi.yaml
+  binding: GET /me
+  mutating: false
+  parameters: []
+  request_body: false
+  input_schema_source: openapi/gloo-platform-portal-openapi.yaml#/paths//me/get
+  description: Gets the user for the current session.
+- tool: gloo_platform_portal_list_apis
+  operationId: ListAPIs
+  api: gloo:gloo-mesh
+  spec: gloo-platform-portal-openapi.yaml
+  binding: GET /apis
+  mutating: false
+  parameters: []
+  request_body: false
+  input_schema_source: openapi/gloo-platform-portal-openapi.yaml#/paths//apis/get
+  description: Lists APIs visible to the current user.
+- tool: gloo_platform_portal_get_api_schema
+  operationId: GetApiSchema
+  api: gloo:gloo-mesh
+  spec: gloo-platform-portal-openapi.yaml
+  binding: GET /apis/{id}/schema
+  mutating: false
+  parameters:
+  - id
+  request_body: false
+  input_schema_source: openapi/gloo-platform-portal-openapi.yaml#/paths//apis/{id}/schema/get
+  description: Gets the schema for an API.
+- tool: gloo_platform_portal_get_usage_plans
+  operationId: GetUsagePlans
+  api: gloo:gloo-mesh
+  spec: gloo-platform-portal-openapi.yaml
+  binding: GET /usage-plans
+  mutating: false
+  parameters: []
+  request_body: false
+  input_schema_source: openapi/gloo-platform-portal-openapi.yaml#/paths//usage-plans/get
+  description: Lists all usage plans for the developer portal.
+- tool: gloo_platform_portal_list_api_keys
+  operationId: ListAPIKeys
+  api: gloo:gloo-mesh
+  spec: gloo-platform-portal-openapi.yaml
+  binding: GET /api-keys
+  mutating: false
+  parameters:
+  - usagePlans
+  request_body: false
+  input_schema_source: openapi/gloo-platform-portal-openapi.yaml#/paths//api-keys/get
+  description: Lists API keys for the current user, filterable by usage plans or API IDs.
+- tool: gloo_platform_portal_create_api_key
+  operationId: CreateAPIKey
+  api: gloo:gloo-mesh
+  spec: gloo-platform-portal-openapi.yaml
+  binding: POST /api-keys
+  mutating: true
+  parameters: []
+  request_body: true
+  input_schema_source: openapi/gloo-platform-portal-openapi.yaml#/paths//api-keys/post
+  description: Creates an API key for the current user for a specific API ID and usage plan.
+- tool: gloo_platform_portal_delete_api_key
+  operationId: DeleteAPIKey
+  api: gloo:gloo-mesh
+  spec: gloo-platform-portal-openapi.yaml
+  binding: DELETE /api-keys/{id}
+  mutating: true
+  parameters:
+  - id
+  request_body: false
+  input_schema_source: openapi/gloo-platform-portal-openapi.yaml#/paths//api-keys/{id}/delete
+  description: Deletes the current user's API key(s) for a specified API ID.
+- tool: gloo_idp_connect_create_oauth_application
+  operationId: CreateOAuthApplication
+  api: gloo:gloo-portal
+  spec: gloo-portal-idp-connect-openapi.yaml
+  binding: POST /applications
+  mutating: true
+  parameters:
+  - token
+  request_body: true
+  input_schema_source: openapi/gloo-portal-idp-connect-openapi.yaml#/paths//applications/post
+  description: Creates an OAuth2 client.
+- tool: gloo_idp_connect_delete_oauth_application
+  operationId: DeleteOAuthApplication
+  api: gloo:gloo-portal
+  spec: gloo-portal-idp-connect-openapi.yaml
+  binding: DELETE /applications/{id}
+  mutating: true
+  parameters:
+  - id
+  - token
+  request_body: false
+  input_schema_source: openapi/gloo-portal-idp-connect-openapi.yaml#/paths//applications/{id}/delete
+  description: Delete a client in the OIDC provider.
+- tool: gloo_guardrail_process_prompts_request
+  operationId: process_prompts_request_post
+  api: gloo:gloo-gateway
+  spec: gloo-ai-gateway-guardrail-webhook-openapi.yaml
+  binding: POST /request
+  mutating: true
+  parameters: []
+  request_body: true
+  input_schema_source: openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml#/paths//request/post
+  description: Process Prompts
+- tool: gloo_guardrail_process_responses_response
+  operationId: process_responses_response_post
+  api: gloo:gloo-gateway
+  spec: gloo-ai-gateway-guardrail-webhook-openapi.yaml
+  binding: POST /response
+  mutating: true
+  parameters: []
+  request_body: true
+  input_schema_source: openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml#/paths//response/post
+  description: Process Responses

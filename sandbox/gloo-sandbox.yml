@@ -1,0 +1,81 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://www.solo.io/resources/lab (Solo Academy labs index; https://academy.solo.io/
+  redirects here), https://www.solo.io/llms.txt, the Gloo documentation tutorials, and the
+  solo-io/platform-portal-backstage-plugin-backend repository, all read 2026-09-12.
+docs: https://www.solo.io/resources/lab
+provider: Gloo
+providerId: gloo
+description: >-
+  Gloo has no test mode, no sandbox API keys and no test-vs-live key prefixes — there is nothing
+  to have them on, because there is no Solo.io-hosted API to call. What Solo.io provides instead
+  is a genuinely substantial try-before-you-install surface: browser-based hands-on labs that
+  provision a real cluster running the real product, plus local demo fixtures shipped in the
+  repositories.
+test_mode:
+  exists: false
+  key_prefixes: []
+  note: >-
+    No test/live key distinction, no test cards, no test clocks, no hosted fixture tokens. The
+    API keys Gloo Portal mints are real keys for the operator's own APIs. Recording this as an
+    honest absence rather than an omission.
+hosted_labs:
+  exists: true
+  url: https://www.solo.io/resources/lab
+  alias: https://academy.solo.io/
+  brand: Solo Academy
+  access: free, browser-based, no local install
+  description: >-
+    Guided hands-on labs that stand up a live environment in the browser. These are the closest
+    thing Gloo has to a playground, and they cover the current product line rather than only
+    legacy Gloo.
+  examples:
+    - title: 'Kgateway Lab: Understanding the basics of Kubernetes Gateway API with kgateway'
+      url: https://www.solo.io/resources/lab/understanding-the-basics-of-kubernetes-gateway-api-with-kgateway
+    - title: 'Kgateway Lab: Understanding kgateway and Gateway API policy attachments'
+      url: https://www.solo.io/resources/lab/understanding-kgateway-patterns-of-extensions
+    - title: 'Kgateway Lab: Installing kgateway, an open-source implementation of the Kubernetes Gateway API'
+      url: https://www.solo.io/resources/lab/install-kgateway-open-source-implementation-of-the-gateway-api
+    - title: 'Solo Lab: Gloo Cloud Preview'
+      url: https://www.solo.io/resources/lab/solo-lab-gloo-cloud-preview
+    - title: 'Solo Academy Course: Envoy Basics'
+      url: https://www.solo.io/resources/lab/solo-academy-course-envoy-basics
+  related:
+    - title: MCP Academy
+      url: https://www.solo.io/mcp-academy
+      note: A parallel hands-on lab track for MCP, agentgateway and kagent.
+local_fixtures:
+  exists: true
+  items:
+    - name: mock-portal-api
+      repository: https://github.com/solo-io/platform-portal-backstage-plugin-backend
+      path: mock-portal-api/
+      description: >-
+        A mock implementation of the Gloo Platform Portal API, shipped so the Backstage plugin
+        can be developed and tested without a running portal. This is the only stand-in for the
+        Portal API that Solo.io publishes.
+    - name: keycloak-realm.json
+      repository: https://github.com/solo-io/platform-portal-backstage-plugin-backend
+      description: >-
+        A ready-made Keycloak realm for standing up the OIDC identity provider the Portal API's
+        id_token cookie depends on, locally.
+    - name: dev-portal-starter
+      repository: https://github.com/solo-io/dev-portal-starter
+      description: A runnable reference developer-portal frontend to point at a portal instance.
+    - name: petstore demo
+      docs: https://docs.solo.io/gloo-edge/latest/guides/traffic_management/hello_world/
+      description: >-
+        The petstore upstream used throughout the Gloo documentation tutorials, including the
+        Portal quickstart. The Gloo Platform Portal spec's own UsagePlan.apiIds examples
+        ("petstoreAPI-petstoreNamespace-cluster-1") reference it.
+    - name: doc-examples
+      repository: https://github.com/solo-io/doc-examples
+      description: Code snippets and examples used across the Solo.io documentation.
+self_install_trial:
+  exists: true
+  note: >-
+    The strongest "sandbox" of all for this product class: Gloo Edge / kgateway open source is
+    Apache-2.0 and installable in one command (`glooctl install gateway`, or the Helm chart), so
+    a prospective user can run the real thing locally on kind or minikube without talking to
+    anyone. Enterprise features require a licence key obtained from Solo.io.

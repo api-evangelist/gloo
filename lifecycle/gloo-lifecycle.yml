@@ -1,0 +1,123 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://docs.solo.io/gloo-edge/latest/reference/support/ (release support policy),
+  https://docs.solo.io/gateway/latest/reference/changelog/ (version streams),
+  https://docs.solo.io/gloo-mesh-enterprise/latest/reference/version/ (Gloo Mesh versions),
+  https://github.com/solo-io/gloo/releases (dated releases), https://legal.solo.io/ (technical
+  support policy), and live probes of solo.statuspage.io / status.solo.io on 2026-09-12.
+provider: Gloo
+providerId: gloo
+description: >-
+  Lifecycle posture for the Gloo family. Gloo is INSTALLED SOFTWARE, so its lifecycle is a
+  release-support policy over versioned artifacts rather than an API-endpoint deprecation
+  policy with Sunset headers. Solo.io publishes a real, specific and unusually clear one —
+  n-3 patching — and demonstrably honours it. It does NOT operate a status page, and it does
+  not publish HTTP-level deprecation signalling on the Portal API.
+versioning:
+  scheme: semver
+  api_version: v1
+  api_version_style: URL path (/v1 on every published server URL)
+  product_streams:
+    - name: Solo Enterprise for kgateway
+      latest: 2.3.x
+      note: The current commercial gateway, formerly named Gloo Gateway.
+    - name: Gloo Gateway (Kubernetes Gateway API)
+      latest: 1.22.x
+      supported: ['1.22.x', '1.21.x', '1.20.x', '1.19.x']
+    - name: Gloo Edge
+      latest: 1.22.x
+      supported: ['1.22.x', '1.21.x', '1.20.x', '1.19.x']
+    - name: Solo Enterprise for Istio / Gloo Mesh (Gloo Platform APIs)
+      latest: '2.14'
+      supported: ['2.14', '2.13', '2.12', '2.11']
+      istio_stable: 1.31.x
+  latest_release:
+    version: v1.22.3
+    date: '2026-08-27'
+    source: https://github.com/solo-io/gloo/releases/tag/v1.22.3
+deprecation_policy:
+  published: true
+  url: https://docs.solo.io/gloo-edge/latest/reference/support/
+  policy: n-3
+  statement: >-
+    "Gloo Gateway Enterprise offers `n-3` patching support for bug and critical security
+    fixes. In other words, the current release and the three previous releases are supported."
+  scope: release support / end-of-life for versioned software, NOT endpoint deprecation
+  backporting: >-
+    Critical patches and bug fixes are backported to every actively supported branch; new
+    features are not backported to stable branches.
+  observed_evidence: >-
+    On 2026-08-27 Solo.io shipped the identical SDS readinessProbe fix as v1.22.3, v1.21.15,
+    v1.20.24 and v1.19.22 — four supported streams patched the same day, which is the n-3
+    policy visible in the release record rather than only asserted in prose.
+  dependency_policy:
+    envoy: >-
+      "Officially, Gloo Gateway Enterprise offers support for `n-1` of Envoy community
+      releases."
+    kubernetes: Latest Kubernetes version plus all releases from the previous year.
+    istio: Per-version compatibility matrix (e.g. Gloo Gateway 1.21.x supports Istio 1.25–1.29).
+  http_signalling:
+    sunset_header: false
+    deprecation_header: false
+    rfc8594: false
+    note: >-
+      No RFC 8594 Sunset or Deprecation header is declared in any of the four published
+      OpenAPI contracts, and no operation is marked `deprecated: true`. Version retirement is
+      communicated through the documentation and the changelog, not at the HTTP layer.
+  deprecated_operations: []
+  deprecated_operations_note: >-
+    Zero of the 39 published operations carry a `deprecated` flag set to true.
+product_renames:
+  note: >-
+    Solo.io renamed its commercial products in 2026 and says so explicitly in its own
+    llms.txt: "Current commercial product names are Istio Enterprise, Kgateway Enterprise,
+    Istio Support, Agentgateway Enterprise, Kagent Enterprise, and Agentregistry Enterprise.
+    Open-source projects use kgateway, kagent, agentgateway, agentregistry, and Istio.
+    Historical product names must not be used as current names." This is a naming lifecycle
+    event that affects every inbound link built against the old names.
+  mappings:
+    - from: Gloo Gateway
+      to: Solo Enterprise for kgateway
+      evidence: https://www.solo.io/products/gloo-gateway/ now 301s to https://www.solo.io/products/kgateway
+    - from: Gloo Mesh
+      to: Solo Enterprise for Istio
+      evidence: https://www.solo.io/products/gloo-mesh/ now 301s to https://www.solo.io/products/istio
+    - from: Gloo Portal
+      to: Gloo Portal, folded into the Gloo Gateway documentation set
+      evidence: >-
+        https://www.solo.io/products/gloo-portal/ now resolves to the Solo.io homepage and
+        https://docs.solo.io/portal/latest/ returns 404; the Portal docs live at
+        https://docs.solo.io/gateway/latest/portal/.
+status_page:
+  published: false
+  probes:
+    - url: https://status.solo.io/
+      status: 000
+      note: Does not resolve.
+    - url: https://solo.statuspage.io/
+      status: 200
+      resolved_to: https://solo.statuspage.io/inactive
+      note: >-
+        An Atlassian Statuspage subdomain exists but redirects to /inactive — the page is not
+        in service. No StatusPage pointer is emitted.
+    - url: https://www.solo.io/status
+      status: 404
+  note: >-
+    Consistent with the deployment model: the customer runs the gateway, so there is no Solo.io
+    control plane whose uptime could be reported.
+sla:
+  published: false
+  support_terms_url: https://legal.solo.io/#technical-support-policy
+  note: >-
+    Solo.io publishes a Technical Support Policy as a contract document on legal.solo.io.
+    Response-time targets and support tiers were not extracted; the document is contractual
+    rather than a machine-readable SLA.
+changelog:
+  published: true
+  urls:
+    - https://docs.solo.io/gateway/latest/reference/changelog/
+    - https://docs.solo.io/gloo-edge/latest/reference/changelog/
+    - https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+    - https://github.com/solo-io/gloo/releases
+  see: changelog/gloo-changelog.yml

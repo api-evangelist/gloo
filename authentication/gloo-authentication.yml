@@ -1,0 +1,105 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  Derived from openapi/gloo-portal-server-openapi.yaml and
+  openapi/gloo-platform-portal-openapi.yaml, then upgraded from the Solo.io credential
+  management documentation at
+  https://docs.solo.io/gateway/latest/portal/guides/frontend-portal/credential-management/
+docs: https://docs.solo.io/gateway/latest/portal/guides/frontend-portal/credential-management/
+provider: Gloo
+providerId: gloo
+description: >-
+  Gloo's callable HTTP surface is the Gloo Portal server API (and its Gloo Platform
+  predecessor). Both authenticate the CALLER as a developer-portal end user with an OIDC id
+  token carried in a cookie — they do NOT use a bearer API key of their own. The API keys and
+  OAuth client credentials these endpoints mint are credentials for the APIs the portal
+  fronts, not for the portal API itself. The Gloo Portal IdP Connect API and the AI Gateway
+  guardrail webhook publish no securityScheme at all: IdP Connect takes an optional `token`
+  header naming the originating user and is expected to run inside the cluster, and the
+  guardrail webhook is an endpoint the operator implements and protects themselves.
+summary:
+  types:
+    - apiKey
+  api_key_in:
+    - cookie
+  oauth2: false
+  openid_connect: true
+  openid_connect_note: >-
+    OIDC is the real identity mechanism, but it is configured on the gateway (extauth /
+    OIDC policy) rather than declared as an openIdConnect securityScheme in the spec. The
+    spec only sees its output: the id_token cookie.
+  mutual_tls: false
+  unauthenticated_operations: true
+  unauthenticated_note: >-
+    Several Portal operations declare `security: [{identityToken: []}, {}]` — an explicit
+    empty requirement — because a portal can be configured for public, anonymous browsing of
+    its API catalog. GetCurrentUser, ListAPIs, GetApiSchema and GetUsagePlans all allow it.
+schemes:
+  - name: identityToken
+    type: apiKey
+    in: cookie
+    parameter: id_token
+    description: id token cookie from the identity provider used to authenticate the user
+    sources:
+      - openapi/gloo-portal-server-openapi.yaml
+      - openapi/gloo-platform-portal-openapi.yaml
+    applies_to:
+      - gloo:gloo-portal
+      - gloo:gloo-mesh
+    failure_modes:
+      - status: 401
+        meaning: The user's identity token is invalid.
+      - status: 403
+        meaning: The identity token is valid but the user is missing claims or permission for this operation.
+  - name: token
+    type: header
+    in: header
+    parameter: token
+    description: >-
+      Token of origin user invoking the request. Declared as an optional header parameter on
+      both Gloo Portal IdP Connect operations rather than as a securityScheme.
+    sources:
+      - openapi/gloo-portal-idp-connect-openapi.yaml
+    applies_to:
+      - gloo:gloo-portal
+  - name: none
+    type: none
+    description: >-
+      The AI Gateway guardrail webhook contract declares no security scheme. It describes an
+      endpoint the OPERATOR stands up and that kgateway / agentgateway / Gloo Gateway calls;
+      protecting it is the operator's responsibility.
+    sources:
+      - openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml
+    applies_to:
+      - gloo:gloo-gateway
+credentials_minted_by_the_api:
+  - kind: API key
+    operations:
+      - CreateApplicationAPIKey
+      - ListApplicationAPIKeys
+      - DeleteAPIKey
+    note: >-
+      The plaintext key is returned only once, at creation. The APIKey schema says so
+      explicitly ("Is returned only once when the API key is created"). There is no
+      retrieve-key-again operation; a lost key must be deleted and re-issued.
+  - kind: OAuth2 client credentials
+    operations:
+      - GenerateApplicationOAuthCredential
+      - GetApplicationOAuthCredential
+      - DeleteOAuthCredential
+      - CreateOAuthApplication
+      - DeleteOAuthApplication
+    note: >-
+      Client secrets are shown once at creation and are NOT stored in the Portal database —
+      Solo's own spec says an administrator must retrieve a lost secret from the OIDC provider.
+      CreateOAuthApplication / DeleteOAuthApplication live in the separate IdP Connect service.
+docs_pages:
+  - url: https://docs.solo.io/gateway/latest/portal/guides/frontend-portal/credential-management/
+    status: 200
+    covers: API key and OAuth credential management for portal consumers
+  - url: https://docs.solo.io/gateway/latest/portal/guides/frontend-portal/credential-management/oauth/
+    status: 200
+    covers: OAuth credential provisioning through Gloo Portal IdP Connect
+  - url: https://docs.solo.io/gateway/latest/security/
+    status: 200
+    covers: Gateway-level authentication and authorization policy (OIDC, JWT, ext-auth, API key)

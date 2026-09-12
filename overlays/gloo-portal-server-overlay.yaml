@@ -1,0 +1,44 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist overlay for Gloo Portal Server API
+  version: 1.0.0
+extends: ../openapi/gloo-portal-server-openapi.yaml
+x-provenance:
+  generated: '2026-09-12'
+  method: generated
+  source: openapi/gloo-portal-server-openapi.yaml
+  note: 'Non-destructive. The original contract is never mutated; this overlay records only API Evangelist
+    enhancements. Operation-level tagging is deliberately NOT added: all operations in these contracts
+    are already tagged.'
+actions:
+- target: $.info
+  description: 'Record API Evangelist provenance: where this contract was harvested from and when.'
+  update:
+    x-apievangelist:
+      harvested: '2026-09-12'
+      source: https://github.com/solo-io/gloo-gateway-use-cases/blob/main/portal/openapi.yaml
+      provider: gloo
+      method: searched
+- target: $.info
+  description: Add Solo.io's published support contact; the original contract declares none.
+  update:
+    contact:
+      name: Solo.io
+      url: https://www.solo.io/company/get-support
+- target: $
+  description: Record what the servers[] block actually means for a client, so a published host is not
+    mistaken for a callable one.
+  update:
+    x-deployment-note: servers[] is http://portal.example.com/v1 — a deliberate placeholder. The Portal
+      server is software the operator deploys; the real host is whatever they exposed it on, and Solo.io
+      says so in info.description.
+- target: $
+  description: Declare at document level the 5 tags the operations already use. Every operation in this
+    contract is tagged, but the document declares no tags[] block, so tooling has no descriptions to render.
+  update:
+    tags:
+    - name: Applications
+    - name: API Products
+    - name: Me
+    - name: Subscriptions
+    - name: Teams

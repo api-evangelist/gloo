@@ -1,0 +1,174 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  Derived from the four published OpenAPI contracts in openapi/ and the first-party protobuf
+  definitions in grpc/ and solo-io/gloo projects/gloo/api/**, then confirmed against the
+  Solo.io documentation and the Kubernetes SIG-Network Gateway API conformance report filed
+  for kgateway v2.4.0-rc.1 against Gateway API v1.6.1.
+provider: Gloo
+providerId: gloo
+description: >-
+  Standards posture of the Gloo family. Gloo's conformance story is overwhelmingly about the
+  INFRASTRUCTURE standards it implements as a gateway and mesh — Kubernetes Gateway API,
+  Envoy xDS, proxy-wasm, OIDC/JWT, OpenTelemetry — not about REST conventions on its own
+  management API, which conforms to very little. Both facts are recorded below.
+domain_standard:
+  id: kubernetes-gateway-api
+  name: Kubernetes Gateway API (gateway.networking.k8s.io)
+  body: Kubernetes SIG-Network
+  conforms: true
+  version_tested: v1.6.1
+  channel: experimental
+  mode: default
+  result: success
+  statistics:
+    core_passed: 37
+    core_failed: 0
+    extended_passed: 56
+    extended_failed: 0
+  evidence: https://github.com/kubernetes-sigs/gateway-api/blob/main/conformance/reports/v1.6/kgateway/v2.4.0-rc.1-report.yaml
+  evidence_date: '2026-07-20'
+  contract_location: >-
+    The contract itself is the CRD API, rendered at
+    https://docs.solo.io/gateway/latest/reference/api/ and defined in
+    projects/gateway/api/v1/*.proto in solo-io/gloo (gateway.proto, http_gateway.proto,
+    virtual_service.proto, route_table.proto, matchable_http_gateway.proto).
+  attribution_note: >-
+    IMPORTANT — the conformance report is filed by organization `kgateway-dev`, project
+    `kgateway`, url github.com/kgateway-dev/kgateway. kgateway is the open-source project
+    Solo.io created and donated, and Solo Enterprise for kgateway (the product formerly named
+    Gloo Gateway) is built on it. It is recorded here as conformance of the upstream project
+    this record's products are built from, NOT as a report filed by solo-io itself. Solo.io
+    has filed reports under the kgateway name for Gateway API v1.4.0, v1.5 and v1.6.
+  why_it_matters: >-
+    This is the domain standard for the Kubernetes ingress/API-gateway market. A buyer already
+    speaking Gateway API can move HTTPRoute/Gateway manifests onto Gloo without a bespoke
+    connector; one who is not needs a per-vendor CRD migration. 93 conformance tests passing
+    with zero failures is the strongest single machine-checkable quality claim in this record.
+conformance:
+  - id: kubernetes-gateway-api
+    conforms: true
+    evidence: https://github.com/kubernetes-sigs/gateway-api/tree/main/conformance/reports/v1.6/kgateway
+    note: See domain_standard above. Reports also filed for Gateway API v1.4.0 and v1.5.
+  - id: kubernetes-ingress
+    conforms: true
+    evidence: https://docs.solo.io/gloo-edge/latest/installation/ingress/
+    note: >-
+      Gloo Edge implements the Kubernetes Ingress resource as well as Gateway API. The
+      controller lives in projects/ingress/ with its own protobuf API
+      (projects/ingress/api/v1/ingress.proto, service.proto).
+  - id: envoy-xds
+    conforms: true
+    evidence: https://github.com/solo-io/gloo/tree/main/projects/gloo/api/external/envoy
+    note: >-
+      Gloo is an Envoy control plane. It vendors and programs the Envoy xDS configuration API
+      directly — 100+ Envoy .proto files under projects/gloo/api/external/envoy/, covering
+      config/core/v3, config/route/v3, config/trace/v3 and the extension filters.
+  - id: proxy-wasm
+    conforms: true
+    evidence: https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/wasm/
+    note: >-
+      WebAssembly filter extensibility via the proxy-wasm ABI. Solo.io publishes the
+      AssemblyScript SDK as @solo-io/proxy-runtime on npm (last released 2022-02-16) and the
+      wasm filter config as projects/gloo/api/v1/options/wasm/wasm.proto.
+  - id: grpc
+    conforms: true
+    evidence: grpc/gloo-gloo-validation.proto
+    note: >-
+      Gloo exposes first-party gRPC services — GlooValidationService (Validate,
+      NotifyOnResync) and ProxyEndpointService (GetProxies) — defined in proto3 and shipped in
+      the public repository.
+  - id: grpc-json-transcoding
+    conforms: true
+    evidence: https://docs.solo.io/gloo-edge/latest/guides/traffic_management/destination_types/grpc/
+    note: >-
+      HTTP/JSON to gRPC transcoding per the google.api.http annotation convention, configured
+      by projects/gloo/api/v1/options/grpc_json/grpc_json.proto.
+  - id: graphql
+    conforms: true
+    evidence: https://docs.solo.io/gloo-edge/latest/guides/graphql/
+    note: >-
+      Gloo GraphQL builds a GraphQL surface over REST/gRPC upstreams, with schema stitching.
+      Configured by projects/gloo/api/v1/enterprise/options/graphql/v1beta1/graphql.proto.
+      Note this is a capability Gloo PROVIDES to its users, not a GraphQL API Solo.io exposes.
+  - id: oidc
+    conforms: true
+    evidence: https://docs.solo.io/gloo-edge/latest/guides/security/auth/extauth/oauth/
+    note: >-
+      OpenID Connect authentication as a gateway ext-auth policy, and the mechanism behind the
+      `id_token` cookie the Gloo Portal API authenticates with.
+  - id: oauth2
+    conforms: true
+    evidence: https://docs.solo.io/gateway/latest/portal/guides/frontend-portal/credential-management/oauth/
+    note: >-
+      OAuth2 client-credential provisioning. Gloo Portal IdP Connect creates and deletes OAuth2
+      clients in the operator's OIDC provider (CreateOAuthApplication / DeleteOAuthApplication).
+      No oauth2 securityScheme is declared on Solo's own APIs — see scopes note below.
+  - id: jwt
+    conforms: true
+    evidence: https://docs.solo.io/gloo-edge/latest/guides/security/auth/jwt/
+    note: >-
+      RFC 7519 JWT validation with RFC 7517 JWKS key sources, configured by
+      projects/gloo/api/v1/enterprise/options/jwt/jwt.proto.
+  - id: fips-140-2
+    conforms: true
+    evidence: https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/fips/
+    note: >-
+      Solo.io publishes a FIPS-compliant data-plane build of Gloo Edge Enterprise (BoringCrypto
+      Envoy images). This is a published build option documented by the vendor, NOT an
+      independent certification of Solo.io as an organisation.
+  - id: opentelemetry
+    conforms: true
+    evidence: https://github.com/solo-io/gloo/blob/main/projects/gloo/api/external/envoy/config/trace/v3/opentelemetry.proto
+    note: >-
+      OpenTelemetry tracing is a first-class tracing provider, alongside Zipkin, OpenCensus and
+      Datadog (each with its own vendored config proto under config/trace/v3/).
+  - id: openapi
+    conforms: true
+    evidence: openapi/gloo-portal-server-openapi.yaml
+    note: >-
+      Four published contracts: three OpenAPI 3.0.0 (Portal Server, Gloo Platform Portal, IdP
+      Connect) and one OpenAPI 3.1.0 (AI Gateway guardrail webhook). Solo.io also maintains
+      solo-io/protoc-gen-openapi, which compiles its protobufs to OpenAPI v3.
+  - id: rfc9457
+    conforms: false
+    evidence: errors/gloo-problem-types.yml
+    note: No application/problem+json envelope anywhere. See the error catalog.
+  - id: json-api
+    conforms: false
+    evidence: openapi/gloo-portal-server-openapi.yaml
+    note: Plain JSON resources; no JSON:API document structure, no top-level data/errors envelope.
+  - id: pagination
+    conforms: false
+    evidence: conventions/gloo-conventions.yml
+    note: No limit/offset/page/cursor parameter exists on any of the 39 operations.
+  - id: idempotency
+    conforms: false
+    evidence: conventions/gloo-conventions.yml
+    note: No Idempotency-Key header. 21 mutating operations, none with replay protection.
+  - id: oauth-scopes
+    conforms: false
+    evidence: authentication/gloo-authentication.yml
+    note: >-
+      No oauth2 securityScheme and therefore no scope surface on Solo's own APIs — which is why
+      no scopes/ artifact is written for this provider. Authorization is by OIDC claims and
+      portal RBAC, not by declared scopes.
+  - id: fhir
+    conforms: false
+    note: Not applicable — infrastructure software, not a healthcare data provider.
+  - id: scim
+    conforms: false
+    note: >-
+      Checked. The Portal server API models users, teams and team membership, which is the
+      shape SCIM standardises, but it uses bespoke schemas (User, Team, TeamCreate) with no
+      urn:ietf:params:scim:schemas:* URN and no /Users or /Groups resource. An operator
+      integrating an IdP for provisioning needs a bilateral connector.
+  - id: odata
+    conforms: false
+    note: No $metadata surface, no OData query options.
+compliance_certifications:
+  published: false
+  note: >-
+    No SOC 2, ISO 27001, PCI DSS, HIPAA or FedRAMP attestation could be confirmed from any
+    document Solo.io serves. trust.solo.io exists but renders client-side and names none in its
+    served HTML. No Compliance pointer is emitted — see security/gloo-trust-center.yml.

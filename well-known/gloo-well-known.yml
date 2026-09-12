@@ -1,0 +1,211 @@
+generated: '2026-09-12'
+method: probed
+source: live HTTPS probes of every host this record knows (registrable domain + www, docs host, legal host, trust host, and the OpenAPI servers[] host)
+provider: Gloo
+providerId: gloo
+description: >-
+  Probe record for RFC 8615 /.well-known/ discovery documents across every Solo.io host
+  in this record. Nothing was found. Every path on solo.io, www.solo.io and docs.solo.io
+  returns 404 (solo.io answers a fixed "Invalid .well-known request" HTML page, which is a
+  404, not a document). legal.solo.io is an S3-backed static host that returns 403
+  AccessDenied XML for any unknown key. trust.solo.io is a Vanta-hosted single-page trust
+  center whose catch-all answers HTTP 200 with the same HTML shell for EVERY /.well-known/
+  path — those 200s are NOT documents and are recorded as html_shell misses. The OpenAPI
+  servers[] host api.gloo-platform-portal.com does not resolve at all (connection failure,
+  status 000); it is a documentation placeholder in Solo's published spec, not a live API host.
+  NO WellKnown or SecurityTxt pointer is emitted in apis.yml because no path returned a real
+  document. Solo.io does publish a vulnerability disclosure process, but at an ordinary web
+  page (https://www.solo.io/security), not at /.well-known/security.txt.
+hosts:
+  - host: solo.io
+    note: apex; answers a fixed "Invalid .well-known request" page with HTTP 404
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+  - host: www.solo.io
+    note: primary marketing + product host; serves /llms.txt but no /.well-known/ documents
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+  - host: docs.solo.io
+    note: product documentation host (Hugo/Hextra static site)
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 404
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+        file: null
+      - path: /.well-known/api-catalog
+        status: 404
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 404
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 404
+        file: null
+      - path: /.well-known/agent.json
+        status: 404
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 404
+        file: null
+  - host: legal.solo.io
+    note: static object-store host; returns 403 AccessDenied XML for any unknown key
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 403
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 403
+        file: null
+      - path: /.well-known/api-catalog
+        status: 403
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 403
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 403
+        file: null
+      - path: /.well-known/agent.json
+        status: 403
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 403
+        file: null
+  - host: trust.solo.io
+    note: >-
+      Vanta-hosted trust center. SPA catch-all: every path returns HTTP 200 with the same
+      HTML shell (data-version 8b7a38181c8e22f77b49c50e8067f33815ee2277). These are FALSE
+      POSITIVES, not documents — recorded with html_shell true and credited as misses.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        html_shell: true
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 200
+        html_shell: true
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        html_shell: true
+        file: null
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        html_shell: true
+        file: null
+      - path: /.well-known/api-catalog
+        status: 200
+        html_shell: true
+        file: null
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        html_shell: true
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 200
+        html_shell: true
+        file: null
+      - path: /.well-known/agent.json
+        status: 200
+        html_shell: true
+        file: null
+      - path: /.well-known/aauth-resource.json
+        status: 200
+        html_shell: true
+        file: null
+  - host: api.gloo-platform-portal.com
+    note: >-
+      servers[] host declared by Solo's published Gloo Platform Portal and Gloo Portal IdP
+      Connect OpenAPI specs. DNS does not resolve and no connection is possible (curl exit
+      status recorded as 000) — it is an illustrative host in the documentation, not a
+      running SaaS endpoint. The Portal server is software the customer deploys.
+    documents:
+      - path: /.well-known/security.txt
+        status: 000
+        file: null
+      - path: /.well-known/openid-configuration
+        status: 000
+        file: null
+      - path: /.well-known/oauth-authorization-server
+        status: 000
+        file: null
+      - path: /.well-known/api-catalog
+        status: 000
+        file: null
+      - path: /.well-known/agent-card.json
+        status: 000
+        file: null
+      - path: /.well-known/agent.json
+        status: 000
+        file: null
+summary:
+  hosts_probed: 6
+  paths_probed: 51
+  documents_found: 0
+  pointer_emitted: false

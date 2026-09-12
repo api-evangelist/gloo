@@ -1,0 +1,182 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  Registry metadata endpoints queried unauthenticated on 2026-09-12 —
+  proxy.golang.org/<module>/@latest, registry.npmjs.org, the Solo.io public Helm index at
+  https://storage.googleapis.com/solo-public-helm/index.yaml, the GitHub Releases API for
+  solo-io/gloo, and https://github.com/solo-io/homebrew-tap. PyPI, Maven Central, NuGet,
+  RubyGems, Packagist and crates.io were checked and hold no first-party Solo.io package. NOTE: Solo.io publishes npm packages under TWO scopes — @solo-io (hyphen) and @solo.io (dot); both were searched.
+provider: Gloo
+providerId: gloo
+description: >-
+  First-party client libraries, source modules, charts and binaries published by Solo.io for
+  the Gloo family (Gloo Edge / Gloo Gateway / Solo Enterprise for kgateway, Gloo Mesh and
+  Gloo Portal). Gloo is installed software, not a hosted SaaS, so the distribution surface is
+  Go modules, a Helm chart and signed CLI binaries rather than per-language REST SDKs. The one
+  true client SDK is solo-io/kgateway-client, the generated Go clientset for the Solo
+  Enterprise for kgateway (formerly Gloo Gateway) CRD APIs.
+notes:
+  - >-
+    PyPI has a package literally named `gloo` (Gloo 0.1.2, "Project management for data
+    analysis projects"). It is NOT Solo.io's and is deliberately excluded — see the
+    ownership note under excluded[].
+  - >-
+    Solo.io rebranded its commercial products in 2026: Gloo Gateway is now Solo Enterprise
+    for kgateway, Gloo Mesh is now Solo Enterprise for Istio. Package names still carry the
+    Gloo lineage, which is why they appear under this record.
+packages:
+  - name: github.com/solo-io/gloo
+    registry: go
+    language: go
+    official: true
+    version: v1.22.3
+    published: '2026-08-27'
+    url: https://pkg.go.dev/github.com/solo-io/gloo
+    repository: https://github.com/solo-io/gloo
+    role: source-module
+    note: >-
+      The Gloo Edge / Gloo Gateway control plane itself, importable as a Go module. Also the
+      module that carries the projects/gloo/api/**.proto contract definitions saved under grpc/.
+  - name: github.com/solo-io/kgateway-client/v2
+    registry: go
+    language: go
+    official: true
+    version: v2.3.3
+    published: '2026-09-01'
+    url: https://pkg.go.dev/github.com/solo-io/kgateway-client/v2
+    repository: https://github.com/solo-io/kgateway-client
+    role: client-sdk
+    note: >-
+      "Go clients for Solo Enterprise for kgateway" — an automatically published, read-only
+      staged repository containing the typed `clientset` package plus a `portal` package.
+      This is the first-party client SDK for the Gloo/kgateway Enterprise APIs. Versioning
+      tracks Solo Enterprise for kgateway releases (v2.x.y).
+  - name: github.com/solo-io/solo-kit
+    registry: go
+    language: go
+    official: true
+    version: v0.41.1
+    published: '2026-04-29'
+    url: https://pkg.go.dev/github.com/solo-io/solo-kit
+    repository: https://github.com/solo-io/solo-kit
+    role: framework
+    note: >-
+      Solo-Kit, the code-generation and declarative-API toolkit that produces the Gloo
+      protobuf/CRD API surface. Consumed by Gloo Edge; not a REST client.
+  - name: github.com/solo-io/skv2
+    registry: go
+    language: go
+    official: true
+    version: v0.48.0
+    published: '2024-09-10'
+    url: https://pkg.go.dev/github.com/solo-io/skv2
+    repository: https://github.com/solo-io/skv2
+    role: framework
+    note: >-
+      Solo-Kit V2, the operator framework behind Gloo Mesh. Last tagged release is
+      2024-09-10 — roughly two years behind the products that consume it, which is a
+      currency signal worth recording rather than an outage.
+  - name: github.com/solo-io/go-utils
+    registry: go
+    language: go
+    official: true
+    version: v0.30.2
+    published: '2026-08-17'
+    url: https://pkg.go.dev/github.com/solo-io/go-utils
+    repository: https://github.com/solo-io/go-utils
+    role: utility
+    note: Shared Go utilities used across the Solo.io codebases.
+  - name: '@solo-io/proxy-runtime'
+    registry: npm
+    language: assemblyscript
+    official: true
+    version: 0.1.15
+    published: '2022-02-16'
+    url: https://www.npmjs.com/package/@solo-io/proxy-runtime
+    repository: https://github.com/solo-io/proxy-runtime
+    role: extension-sdk
+    note: >-
+      AssemblyScript runtime for writing Envoy/proxy-wasm filters deployed through Gloo. The
+      only package published under the @solo-io npm scope, and unreleased since 2022-02-16 —
+      a clear abandonment signal for the WebAssembly extension path.
+  - name: '@solo.io/platform-portal-backstage-plugin-backend'
+    registry: npm
+    language: typescript
+    official: true
+    version: 0.0.74
+    published: '2026-09-02'
+    url: https://www.npmjs.com/package/@solo.io/platform-portal-backstage-plugin-backend
+    repository: https://github.com/solo-io/platform-portal-backstage-plugin-backend
+    role: integration-plugin
+    note: >-
+      Backstage backend plugin that synchronises Gloo Platform Portal APIs into the Backstage
+      software catalog. Actively maintained (0.0.74 on 2026-09-02) and the freshest npm artifact
+      Solo.io publishes. Published under the @solo.io scope — note the DOT, not the hyphen used
+      by @solo-io/proxy-runtime; the two scopes are different and both are Solo.io's.
+  - name: '@solo.io/graphql-schema-viewer'
+    registry: npm
+    language: typescript
+    official: true
+    version: 0.0.3
+    published: '2023-09-01'
+    url: https://www.npmjs.com/package/@solo.io/graphql-schema-viewer
+    repository_note: >-
+      npm metadata names github.com/solo-io/npm-packages, which returns 404 (probed 2026-09-12);
+      the source repository is private or removed. Only the npm artifact is public.
+    role: ui-component
+    note: >-
+      Embeddable GraphQL schema viewer component, used in the Gloo developer portal UI. Last
+      published 2023-09-01. See components/gloo-components.yml.
+  - name: gloo
+    registry: helm
+    language: n/a
+    official: true
+    version: 1.22.3
+    published: '2026-08-27'
+    url: https://storage.googleapis.com/solo-public-helm/index.yaml
+    repository: https://github.com/solo-io/gloo
+    role: chart
+    note: >-
+      The Gloo Helm chart, published to Solo.io's public Helm repository
+      (https://storage.googleapis.com/solo-public-helm). This is the primary installation
+      artifact for Gloo Edge / Gloo Gateway. Version and date read from the repository index.
+  - name: glooctl
+    registry: github-releases
+    language: n/a
+    official: true
+    version: v1.22.3
+    published: '2026-08-27'
+    url: https://github.com/solo-io/gloo/releases/tag/v1.22.3
+    repository: https://github.com/solo-io/gloo
+    role: cli-binary
+    note: >-
+      Signed CLI binaries (darwin/linux amd64+arm64, windows amd64) with .sha256 sums,
+      attached to every solo-io/gloo release. Also installable from the Solo.io Homebrew tap
+      (https://github.com/solo-io/homebrew-tap, Formula/glooctl.rb). See cli/gloo-cli.yml.
+excluded:
+  - name: gloo
+    registry: pypi
+    reason: >-
+      PyPI "Gloo" 0.1.2 is described as "Project management for data analysis projects" with
+      home_page http://pypi.python.org/pypi/Gloo/. It has no relationship to Solo.io and is
+      excluded under the ownership rule.
+  - name: gloo (crates.io / RubyGems / NuGet / Maven Central / Packagist)
+    registry: multiple
+    reason: >-
+      No first-party Solo.io package found on these registries on 2026-09-12. Gloo ships as
+      Go modules, a Helm chart and CLI binaries.
+summary:
+  package_count: 10
+  official_count: 10
+  sdk_count: 1
+  languages:
+    - go
+    - assemblyscript
+    - typescript
+  registries:
+    - go
+    - npm
+    - helm
+    - github-releases
+  stalest: '@solo-io/proxy-runtime (2022-02-16)'
+  freshest: '@solo.io/platform-portal-backstage-plugin-backend (2026-09-02)'

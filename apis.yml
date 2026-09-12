@@ -1,10 +1,16 @@
 aid: gloo
 name: Gloo
 description: >-
-  Gloo is a suite of open-source and enterprise API gateway and service mesh
-  products from Solo.io built on Envoy Proxy, offering advanced traffic
-  management, security, observability, and developer portal capabilities for
-  Kubernetes and cloud-native environments.
+  Gloo is Solo.io's family of open-source and enterprise API gateway, service mesh and
+  developer portal products, built on Envoy Proxy and Istio and delivered as software the
+  customer runs in their own Kubernetes clusters rather than as a hosted SaaS. Gloo Edge and
+  Gloo Gateway provide ingress, advanced traffic management, external auth, rate limiting,
+  WAF, GraphQL and AI/LLM traffic routing; Gloo Mesh manages multi-cluster Istio; and Gloo
+  Portal publishes API products to internal and external consumers with teams, applications,
+  subscriptions, API keys and OAuth credentials. Solo.io renamed its commercial line in 2026 —
+  Gloo Gateway is now Solo Enterprise for kgateway and Gloo Mesh is now Solo Enterprise for
+  Istio — and the upstream kgateway project is a conformant implementation of the Kubernetes
+  Gateway API, passing 93 of 93 core and extended conformance tests against v1.6.1.
 type: Index
 deliveryModel:
   model: open-core
@@ -36,20 +42,28 @@ access: 3rd-Party
 position: Consuming
 tags:
   - API Gateway
+  - Cloud-Native
+  - Developer Portal
   - Envoy
+  - Istio
   - Kubernetes
+  - Kubernetes Gateway API
   - Open-Source
   - Service Mesh
 tags_raw:
   - API Gateway
+  - Cloud Native
+  - Developer Portal
   - Envoy
+  - Istio
   - Kubernetes
+  - Kubernetes Gateway API
   - Open Source
   - Service Mesh
 url: >-
   https://raw.githubusercontent.com/api-evangelist/gloo/refs/heads/main/apis.yml
 created: '2026-03-18'
-modified: '2026-04-28'
+modified: '2026-09-12'
 specificationVersion: '0.23'
 apis:
   - aid: gloo:gloo-edge
@@ -60,7 +74,7 @@ apis:
       security policies, and observability for cloud-native workloads.
       It provides traffic management features such as rate limiting,
       transformation, and WebAssembly-based extensibility.
-    humanURL: https://www.solo.io/products/gloo-gateway/
+    humanURL: https://docs.solo.io/gloo-edge/latest/
     baseURL: https://docs.solo.io/gloo-edge/latest/
     tags:
       - API Gateway
@@ -80,9 +94,15 @@ apis:
       - type: Reference
         url: https://docs.solo.io/gloo-edge/latest/reference/
       - type: ChangeLog
-        url: https://docs.solo.io/gloo-edge/latest/changelog/
+        url: https://docs.solo.io/gloo-edge/latest/reference/changelog/
       - type: GitHubRepository
         url: https://github.com/solo-io/gloo
+      - type: Protobuf
+        url: grpc/gloo-gloo-validation.proto
+      - type: Protobuf
+        url: grpc/gloo-proxy-endpoint.proto
+      - type: CLI
+        url: cli/gloo-cli.yml
   - aid: gloo:gloo-gateway
     name: Gloo Gateway
     description: >-
@@ -91,7 +111,7 @@ apis:
       It provides advanced traffic management, security, and extensibility for
       modern cloud-native applications with first-class support for AI and LLM
       traffic routing.
-    humanURL: https://www.solo.io/products/gloo-gateway/
+    humanURL: https://www.solo.io/products/kgateway
     baseURL: https://docs.solo.io/gateway/latest/
     tags:
       - API Gateway
@@ -111,9 +131,17 @@ apis:
       - type: Reference
         url: https://docs.solo.io/gateway/latest/reference/
       - type: ChangeLog
-        url: https://docs.solo.io/gateway/latest/changelog/
+        url: https://docs.solo.io/gateway/latest/reference/changelog/
       - type: GitHubRepository
         url: https://github.com/solo-io/gloo
+      - type: APIReference
+        url: https://docs.solo.io/gateway/latest/reference/api/
+      - type: OpenAPI
+        url: openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml
+      - type: Webhooks
+        url: asyncapi/gloo-webhooks.yml
+      - type: Overlay
+        url: overlays/gloo-ai-guardrail-webhook-overlay.yaml
   - aid: gloo:gloo-mesh
     name: Gloo Mesh
     description: >-
@@ -122,7 +150,7 @@ apis:
       security policy enforcement, and observability across hybrid cloud
       environments. It simplifies service mesh operations with a unified control
       plane and policy management interface.
-    humanURL: https://www.solo.io/products/gloo-mesh/
+    humanURL: https://www.solo.io/products/istio
     baseURL: https://docs.solo.io/gloo-mesh-enterprise/latest/
     tags:
       - Istio
@@ -137,7 +165,11 @@ apis:
       - type: Reference
         url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
       - type: ChangeLog
-        url: https://docs.solo.io/gloo-mesh-enterprise/latest/changelog/
+        url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+      - type: OpenAPI
+        url: openapi/gloo-platform-portal-openapi.yaml
+      - type: Overlay
+        url: overlays/gloo-platform-portal-overlay.yaml
   - aid: gloo:gloo-portal
     name: Gloo Portal
     description: >-
@@ -146,8 +178,8 @@ apis:
       and external consumers. It integrates with Gloo Gateway to provide
       self-service API discovery, subscription management, and usage analytics
       for API consumers.
-    humanURL: https://www.solo.io/products/gloo-portal/
-    baseURL: https://docs.solo.io/portal/latest/
+    humanURL: https://docs.solo.io/gateway/latest/portal/
+    baseURL: https://docs.solo.io/gateway/latest/portal/
     tags:
       - API Discovery
       - API Management
@@ -155,12 +187,26 @@ apis:
       - Kubernetes
     properties:
       - type: Documentation
-        url: https://docs.solo.io/portal/latest/
+        url: https://docs.solo.io/gateway/latest/portal/
       - type: GettingStarted
-        url: https://docs.solo.io/portal/latest/getting_started/
-      - type: Reference
-        url: https://docs.solo.io/portal/latest/reference/
+        url: https://docs.solo.io/gateway/latest/portal/tutorials/
+      - type: APIReference
+        url: https://docs.solo.io/gateway/latest/portal/openapi/
+      - type: OpenAPI
+        url: openapi/gloo-portal-server-openapi.yaml
+      - type: OpenAPI
+        url: openapi/gloo-portal-idp-connect-openapi.yaml
+      - type: Overlay
+        url: overlays/gloo-portal-server-overlay.yaml
+      - type: Overlay
+        url: overlays/gloo-idp-connect-overlay.yaml
+      - type: AgentSkill
+        url: skills/_index.yml
+      - type: DataModel
+        url: data-model/gloo-data-model.yml
 common:
+  - type: Authentication
+    url: authentication/gloo-authentication.yml
   - type: License
     name: Apache-2.0
     url: https://github.com/solo-io/gloo/blob/main/LICENSE
@@ -170,8 +216,8 @@ common:
     url: security/gloo-domain-security.yml
   - type: Website
     url: https://www.solo.io/
-  - type: Portal
-    url: https://www.solo.io/products/
+  - type: DeveloperPortal
+    url: https://www.solo.io/docs
   - type: Documentation
     url: https://docs.solo.io/
   - type: GettingStarted
@@ -189,11 +235,65 @@ common:
   - type: Support
     url: https://www.solo.io/company/contact/
   - type: TermsOfService
-    url: https://www.solo.io/legal/terms-of-service/
+    url: https://legal.solo.io/#website-terms-of-use
   - type: PrivacyPolicy
-    url: https://www.solo.io/legal/privacy-policy/
+    url: https://legal.solo.io/#privacy-policy
   - type: Integrations
     url: https://www.solo.io/partners
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Pricing
+    url: https://www.solo.io/pricing
+  - type: Security
+    url: https://www.solo.io/security
+  - type: TrustCenter
+    url: https://trust.solo.io/
+  - type: Packages
+    url: packages/gloo-packages.yml
+  - type: SDKs
+    url: packages/gloo-packages.yml
+  - type: CLI
+    url: cli/gloo-cli.yml
+  - type: Components
+    url: components/gloo-components.yml
+  - type: Sandbox
+    url: sandbox/gloo-sandbox.yml
+  - type: LLMsTxt
+    url: llms/gloo-llms.txt
+  - type: Conventions
+    url: conventions/gloo-conventions.yml
+  - type: Conformance
+    url: conformance/gloo-conformance.yml
+  - type: ErrorCatalog
+    url: errors/gloo-problem-types.yml
+  - type: Lifecycle
+    url: lifecycle/gloo-lifecycle.yml
+  - type: Deprecation
+    url: lifecycle/gloo-lifecycle.yml
+  - type: ChangeLog
+    url: changelog/gloo-changelog.yml
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+  - type: Plans
+    url: plans/gloo-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/gloo-rate-limits.yml
+  - type: FinOps
+    url: finops/gloo-finops.yml
+  - type: X-MCPServerCandidate
+    url: mcp/gloo-mcp.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Overlay
+    url: overlays/gloo-portal-server-overlay.yaml
+  - type: Overlay
+    url: overlays/gloo-platform-portal-overlay.yaml
+  - type: Overlay
+    url: overlays/gloo-idp-connect-overlay.yaml
+  - type: Overlay
+    url: overlays/gloo-ai-guardrail-webhook-overlay.yaml
 integrations:
   - name: Partner with Solo.io
   - name: AWS logo
@@ -201,3 +301,10 @@ integrations:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-12'
+  status: enriched
+  artifacts_added: 34
+  pass: local-v3
+x-parent: solo-io
+x-relationship: product

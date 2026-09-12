@@ -1,0 +1,79 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://docs.solo.io/gateway/latest/reference/cli/ and
+  https://docs.solo.io/gloo-edge/latest/reference/cli/glooctl/ (command reference),
+  https://github.com/solo-io/homebrew-tap (Formula/glooctl.rb) and the release assets on
+  https://github.com/solo-io/gloo/releases/tag/v1.22.3, all read on 2026-09-12.
+docs: https://docs.solo.io/gloo-edge/latest/reference/cli/glooctl/
+provider: Gloo
+providerId: gloo
+description: >-
+  glooctl is Solo.io's first-party command-line client for Gloo Edge and Gloo Gateway. It is
+  the primary way a human installs, inspects and debugs a Gloo installation, and it is a real
+  agent surface in its own right: `glooctl check` returns a machine-inspectable health verdict
+  over the whole gateway install, and `glooctl debug` collects a support bundle.
+clis:
+  - name: glooctl
+    products:
+      - gloo:gloo-edge
+      - gloo:gloo-gateway
+    version: v1.22.3
+    version_date: '2026-08-27'
+    docs: https://docs.solo.io/gloo-edge/latest/reference/cli/glooctl/
+    repository: https://github.com/solo-io/gloo
+    license: Apache-2.0
+    install:
+      - method: homebrew
+        command: brew install solo-io/tap/glooctl
+        source: https://github.com/solo-io/homebrew-tap
+        note: Formula/glooctl.rb in the Solo.io tap.
+      - method: release-binary
+        source: https://github.com/solo-io/gloo/releases/tag/v1.22.3
+        platforms:
+          - darwin-amd64
+          - darwin-arm64
+          - linux-amd64
+          - linux-arm64
+          - windows-amd64
+        note: >-
+          Every binary ships with a matching .sha256 file, so an unattended install can verify
+          what it downloaded.
+    command_groups:
+      - name: check
+        summary: Validate the health and configuration of a Gloo installation.
+        note: The health-verdict command; the same validation path exposed over gRPC as GlooValidationService.
+      - name: install
+        summary: Install Gloo into a cluster.
+        examples:
+          - glooctl install gateway
+          - glooctl install gateway enterprise
+          - glooctl install ingress
+      - name: uninstall
+        summary: Remove a Gloo installation.
+      - name: upgrade
+        summary: Upgrade glooctl itself and the installed Gloo version.
+      - name: debug
+        summary: Collect logs, configuration and state for support.
+    config_file: >-
+      glooctl reads a config file; see
+      https://docs.solo.io/gloo-edge/latest/installation/advanced_configuration/glooctl-config/
+  - name: meshctl
+    products:
+      - gloo:gloo-mesh
+    docs: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/cli/
+    repository: https://github.com/solo-io/homebrew-tap
+    status: referenced
+    note: >-
+      meshctl is the Gloo Mesh / Solo Enterprise for Istio counterpart to glooctl. It is
+      documented in the Gloo Mesh reference section but is NOT published in the Solo.io
+      Homebrew tap Formula directory (which holds glooctl, glooshot, sqoopctl, squashctl and
+      supergloo), so its distribution channel was not confirmed in this pass and no version is
+      recorded rather than guessed.
+    version: null
+    version_date: null
+archived_clis:
+  note: >-
+    The Solo.io Homebrew tap still carries formulae for four retired tools — glooshot,
+    sqoopctl, squashctl and supergloo. They are recorded here so the tap listing is not
+    mistaken for the current CLI surface; none of them is part of a supported Gloo product.

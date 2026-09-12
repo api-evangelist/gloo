@@ -1,0 +1,88 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  https://github.com/solo-io/gloo/releases (GitHub Releases API, read 2026-09-12) and the
+  per-product changelog indexes at https://docs.solo.io/gateway/latest/reference/changelog/,
+  https://docs.solo.io/gloo-edge/latest/reference/changelog/ and
+  https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+docs: https://docs.solo.io/gateway/latest/reference/changelog/
+provider: Gloo
+providerId: gloo
+description: >-
+  Gloo publishes a dated, per-release changelog in two places: a rendered changelog in the
+  product documentation, organised by version stream rather than by date, and the GitHub
+  Releases feed on solo-io/gloo, which carries an ISO timestamp and structured release notes
+  for every patch. The GitHub feed is the machine-readable surface and is what this record
+  captures.
+scheme: semver
+current_version: v1.22.3
+current_version_date: '2026-08-27'
+cadence: >-
+  Frequent patch releases across four concurrently supported minor streams. In the sample
+  window below, 1.22.x, 1.21.x, 1.20.x and 1.19.x each received two releases within four days.
+entry_structure:
+  sections_observed:
+    - Helm Changes
+    - Dependency Bumps
+  note: >-
+    Release bodies are grouped by change category and link the originating GitHub issue. There
+    is no explicit BREAKING marker in the observed window and no separate migration-notes
+    section in the release body.
+breaking_change_marker: false
+entries:
+  - version: v1.22.3
+    date: '2026-08-27'
+    stream: Gloo Gateway / Gloo Edge 1.22.x
+    breaking: false
+    highlights:
+      - 'Helm: SDS container readinessProbe now falls back to the default probe only when global.glooMtls.sds.readinessProbe is unset, so the probe can be explicitly disabled and partial overrides no longer silently drop the default (solo-io/gloo#11389).'
+    url: https://github.com/solo-io/gloo/releases/tag/v1.22.3
+  - version: v1.21.15
+    date: '2026-08-27'
+    stream: 1.21.x
+    breaking: false
+    highlights:
+      - Backport of the SDS readinessProbe Helm fix.
+    url: https://github.com/solo-io/gloo/releases/tag/v1.21.15
+  - version: v1.20.24
+    date: '2026-08-27'
+    stream: 1.20.x
+    breaking: false
+    highlights:
+      - Backport of the SDS readinessProbe Helm fix.
+    url: https://github.com/solo-io/gloo/releases/tag/v1.20.24
+  - version: v1.19.22
+    date: '2026-08-27'
+    stream: 1.19.x
+    breaking: false
+    highlights:
+      - Backport of the SDS readinessProbe Helm fix. Fourth and oldest supported stream under the n-3 policy.
+    url: https://github.com/solo-io/gloo/releases/tag/v1.19.22
+  - version: v1.22.2
+    date: '2026-08-24'
+    stream: 1.22.x
+    breaking: false
+    highlights:
+      - 'Dependency bumps: golang/go to v1.26.6, oras.land/oras-go/v2 to v2.6.2.'
+    url: https://github.com/solo-io/gloo/releases/tag/v1.22.2
+  - version: v1.21.14
+    date: '2026-08-24'
+    stream: 1.21.x
+    breaking: false
+    highlights:
+      - 'Dependency bumps: golang/go to v1.26.6, oras.land/oras-go/v2 to v2.6.2.'
+    url: https://github.com/solo-io/gloo/releases/tag/v1.21.14
+window:
+  from: '2026-08-24'
+  to: '2026-08-27'
+  entries_captured: 6
+  note: >-
+    Recent window only. The full history is at https://github.com/solo-io/gloo/releases and in
+    the per-version changelog pages, and the repository additionally keeps one YAML file per
+    change under changelog/<version>/ in the source tree — an unusually machine-friendly
+    changelog practice worth noting.
+api_changelog:
+  published: false
+  note: >-
+    None of the four published OpenAPI contracts carries a changelog, and every one of them
+    declares info.version 1.0.0. The changelog tracks the SOFTWARE, not the HTTP contract.

@@ -1,0 +1,205 @@
+generated: '2026-09-12'
+method: derived
+source: >-
+  openapi/gloo-portal-server-openapi.yaml, openapi/gloo-platform-portal-openapi.yaml,
+  openapi/gloo-portal-idp-connect-openapi.yaml,
+  openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml — every 4xx/5xx response declared in
+  Solo.io's four published OpenAPI contracts, read on 2026-09-12.
+provider: Gloo
+providerId: gloo
+description: >-
+  Error catalog for the Gloo HTTP surface. Solo.io does NOT publish an RFC 9457
+  application/problem+json envelope anywhere in these contracts, and there is no numeric or
+  string error-code registry: 142 of the 148 declared error responses carry a prose description
+  and no response body schema at all. Two envelopes exist, and only on two of the four
+  contracts. Everything below is derived from the specs, not invented.
+format: none
+format_note: >-
+  Not RFC 9457. No `type`/`title`/`status`/`detail`/`instance` problem document, no
+  application/problem+json media type, and no stable machine-readable error code. Agents must
+  branch on the HTTP status code and, where present, on prose in `message`/`reason`.
+envelopes:
+  - name: Error
+    used_by: gloo-portal-idp-connect
+    media_type: application/json
+    schema: openapi/gloo-portal-idp-connect-openapi.yaml#/components/schemas/Error
+    required:
+      - code
+      - message
+      - reason
+    fields:
+      code: integer — repeats the HTTP status code
+      message: string — e.g. "Status Code Message"
+      reason: string — e.g. "Error reason"
+    note: The only first-class error envelope Solo.io defines. It is scoped to the two IdP Connect operations.
+  - name: HTTPValidationError
+    used_by: gloo-ai-gateway-guardrail-webhook
+    media_type: application/json
+    schema: openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml#/components/schemas/HTTPValidationError
+    fields:
+      detail: array of ValidationError { loc[], msg, type }
+    note: >-
+      The standard FastAPI/Pydantic 422 validation envelope, present because the reference
+      guardrail webhook server is a FastAPI application. It is the guardrail contract's ONLY
+      declared error response.
+  - name: none
+    used_by:
+      - gloo-portal-server
+      - gloo-platform-portal
+    media_type: null
+    note: >-
+      The two Portal server contracts declare 85 error responses with a human description and
+      NO content schema. A client cannot parse these responses; it can only read the status
+      code. This is the single largest error-semantics gap in the Gloo surface.
+problem_types:
+  - status: 400
+    title: Bad request
+    count: 22
+    category: client
+    retryable: false
+    variants:
+      - detail: Bad request. Please supply an API Key Name
+        operations: [CreateAPIKey, CreateApplicationAPIKey, DeleteAPIKey]
+      - detail: Bad request. Please supply an API Id
+        operations: [GetApiSchema]
+      - detail: Bad request. Please supply usage plan Ids
+        operations: [ListAPIKeys]
+      - detail: Bad request. Please supply appId.
+        operations: [GetApplicationOAuthCredential, ListApplicationAPIKeys]
+      - detail: Bad request. Please supply an OAuth client credential ID.
+        operations: [DeleteOAuthCredential]
+      - detail: Bad request. The request body is invalid.
+        operations: [AddTeamMember, CreateTeam, CreateTeamApplication, SubscribeToApiProduct, UpdateApplication, UpdateTeam]
+      - detail: Invalid request parameters.
+        operations: [DeleteApplicationProductSubscription, GenerateApplicationOAuthCredential, GetApiProductById, ListApplicationProductSubscriptions, ListProductVersions]
+      - detail: Invalid status parameter.
+        operations: [ListSubscriptionsByStatus]
+      - detail: Invalid input.
+        operations: [CreateOAuthApplication]
+        envelope: Error
+      - detail: Bad request. The team has users or apps associated with it.
+        operations: [DeleteTeam]
+        note: >-
+          A referential-integrity refusal wearing a 400. Delete or reassign the team's members
+          and applications first — see ListTeamMembers / RemoveTeamMember and
+          ListTeamApplications / DeleteApplication.
+    remediation: Fix the named path parameter, query parameter or request body and resend. Never retry unchanged.
+  - status: 401
+    title: Unauthorized — the user's identity token is invalid
+    count: 29
+    category: auth
+    retryable: false
+    remediation: >-
+      Re-authenticate with the portal's OIDC identity provider and resend with a fresh
+      `id_token` cookie. Applies to nearly every operation in both Portal contracts.
+  - status: 403
+    title: Forbidden — the identity token is valid but the caller lacks claims or permission
+    count: 24
+    category: auth
+    retryable: false
+    variants:
+      - detail: Forbidden. The user's identity token is valid, but the user has missing claims required by this method.
+        operations: [CreateAPIKey, DeleteAPIKey, GetCurrentUser, ListAPIKeys, DeleteOAuthCredential]
+      - detail: per-resource permission refusals (view/update/delete the API product, app, team, subscription or credential)
+        operations: [GetApiProductById, ListProductVersions, DeleteApplication, GetApplicationById, UpdateApplication, GenerateApplicationOAuthCredential, ListApplicationProductSubscriptions, SubscribeToApiProduct, DeleteTeam, GetTeamById, UpdateTeam, ListTeamApplications, CreateTeamApplication, AddTeamMember, RemoveTeamMember]
+      - detail: Unauthorized to view the list. / Unauthorized to delete subscription.
+        operations: [ListSubscriptionsByStatus, DeleteApplicationProductSubscription]
+        note: >-
+          Two 403 descriptions read "Unauthorized", which is the 401 word. Do not infer the
+          status from the prose.
+    remediation: >-
+      The token is good; the claims or the portal RBAC grant are not. Escalate to a portal
+      administrator rather than refreshing the token.
+  - status: 404
+    title: Not found
+    count: 29
+    category: client
+    retryable: false
+    variants:
+      - detail: Resource not found - returns the error message `API schema not found`
+        operations: [GetApiSchema]
+      - detail: API Key with the specified UUID was not found.
+        operations: [DeleteAPIKey]
+      - detail: Application not found. / Application not found for provided appId. / App not found. / Not found.
+        operations: [DeleteOAuthApplication, GenerateApplicationOAuthCredential, CreateApplicationAPIKey, GetApplicationOAuthCredential, ListApplicationAPIKeys, GetApplicationById, ListApplicationProductSubscriptions, UpdateApplication, SubscribeToApiProduct, DeleteApplication]
+      - detail: Team not found / Team not found. / Team not found or User not found. / Teams not found
+        operations: [DeleteTeam, GetTeamById, ListTeamApplications, UpdateTeam, CreateTeamApplication, ListTeamMembers, AddTeamMember, RemoveTeamMember, ListTeams]
+      - detail: User not found / User not found.
+        operations: [CreateTeam, DeleteAPIKey, DeleteOAuthCredential, GetCurrentUser]
+      - detail: API Product not found. / No API Products found
+        operations: [GetApiProductById, ListProductVersions, ListApiProducts]
+      - detail: Subscription not found.
+        operations: [DeleteApplicationProductSubscription]
+    note: >-
+      ListApiProducts and ListTeams return 404 on an EMPTY collection rather than a 200 with
+      an empty array. An agent that treats 404-on-list as an error will misreport a fresh
+      portal as broken.
+    remediation: Confirm the id exists (list the parent collection first). For list operations, treat 404 as "empty", not "failed".
+  - status: 409
+    title: Conflict — the resource already exists
+    count: 5
+    category: client
+    retryable: false
+    variants:
+      - detail: An API key with the same name already exists in the application.
+        operations: [CreateApplicationAPIKey]
+      - detail: Application credentials already exist.
+        operations: [GenerateApplicationOAuthCredential]
+      - detail: Subscription already exists.
+        operations: [SubscribeToApiProduct]
+      - detail: User belongs to a team with the same name
+        operations: [CreateTeam]
+      - detail: Application with the same name already exists in the team.
+        operations: [CreateTeamApplication]
+    note: >-
+      409 is the closest thing Gloo Portal has to replay protection. There is no
+      Idempotency-Key header anywhere in the surface (see conventions/gloo-conventions.yml);
+      uniqueness on NAME is what stops a retried create from producing a duplicate — and it
+      returns a conflict rather than the original resource, so a retrying agent must treat 409
+      as "already done" and then GET the existing resource itself.
+    remediation: Choose a different name, or fetch the existing resource instead of creating it.
+  - status: 422
+    title: Validation Error
+    count: 2
+    category: client
+    retryable: false
+    envelope: HTTPValidationError
+    operations: [process_prompts_request_post, process_responses_response_post]
+    remediation: Correct the fields named in detail[].loc and resend.
+  - status: 500
+    title: Internal server error
+    count: 37
+    category: server
+    retryable: true
+    retry_guidance: >-
+      Solo.io's own wording on most of these is "Try again in a few moments." No Retry-After
+      header is declared anywhere, so use client-side exponential backoff. Because no write
+      operation is idempotent, retrying a failed CREATE risks a 409 rather than a duplicate —
+      which is the safer of the two outcomes, but the caller must handle it.
+    variants:
+      - detail: Internal server error. Try again in a few moments.
+        operations: [GetCurrentUser]
+      - detail: Unexpected error <verb>ing <resource>. (28 distinct per-operation phrasings)
+        note: Each operation has its own bespoke 500 sentence; there is no shared error code.
+      - detail: Internal server error - returns the error message `Stitched schema associated with route table is not an openAPI schema`, `Missing stitched schema for route table` or `Error unmarshalling openAPI spec`
+        operations: [GetApiSchema]
+        note: >-
+          The only 500 in the whole surface that enumerates its causes. It is a configuration
+          fault in the operator's GraphQL/OpenAPI stitching, not a transient outage — retrying
+          will not clear it.
+coverage:
+  operations_total: 39
+  operations_with_4xx: 37
+  operations_with_5xx: 37
+  error_responses_total: 148
+  error_responses_with_body_schema: 6
+  error_responses_without_body_schema: 142
+  distinct_status_codes: [400, 401, 403, 404, 409, 422, 500]
+  rfc9457: false
+  error_code_registry: false
+gaps:
+  - No RFC 9457 problem+json and no machine-readable error code — agents branch on status only.
+  - 142 of 148 declared error responses have NO response body schema, so error detail is undocumented at runtime.
+  - No 429 is declared anywhere, even though the Portal models rate-limit policies on usage plans.
+  - No Retry-After is declared on any 5xx.
+  - ListApiProducts / ListTeams return 404 for an empty collection instead of an empty 200.

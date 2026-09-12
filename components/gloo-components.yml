@@ -1,0 +1,80 @@
+generated: '2026-09-12'
+method: searched
+source: >-
+  npm registry search of the @solo.io and @solo-io scopes, the solo-io GitHub organization, and
+  the Gloo Portal documentation at https://docs.solo.io/gateway/latest/portal/, all read
+  2026-09-12.
+provider: Gloo
+providerId: gloo
+description: >-
+  Client-side and embeddable surfaces Solo.io publishes for building on Gloo Portal. Gloo does
+  not ship a hosted embeddable widget the way a payments or auth vendor does — the portal
+  frontend is something the operator deploys. What Solo.io publishes instead is a full
+  reference frontend to fork, one embeddable UI component on npm, and a Backstage plugin that
+  pulls the portal catalog into an existing internal developer platform.
+families:
+  - name: Developer portal frontend
+    kind: reference-application
+    components:
+      - name: dev-portal-starter
+        repository: https://github.com/solo-io/dev-portal-starter
+        language: TypeScript
+        registry: null
+        version: null
+        version_note: >-
+          Distributed as a repository to fork, not as a published package — there is no registry
+          version to record. Last commit 2026-09-11.
+        description: >-
+          Solo.io's own words: "This is a demo project, to be used with Gloo Platform API
+          Portals. It may be used as a standalone API dev portal interface, or as a template."
+          It consumes the Gloo Portal Server API documented in
+          openapi/gloo-portal-server-openapi.yaml.
+        note: >-
+          This is the thing most Gloo Portal deployments start from. Because it is a template
+          rather than a versioned dependency, an operator who forks it inherits no upgrade path
+          — a real maintenance consideration, not a defect.
+  - name: Embeddable UI components
+    kind: ui-component
+    components:
+      - name: '@solo.io/graphql-schema-viewer'
+        registry: npm
+        version: 0.0.3
+        published: '2023-09-01'
+        url: https://www.npmjs.com/package/@solo.io/graphql-schema-viewer
+        repository_note: >-
+          The package's npm metadata names git+ssh://git@github.com/solo-io/npm-packages.git, but
+          https://github.com/solo-io/npm-packages returns 404 (probed 2026-09-12) — the source
+          repository is private or was removed. Only the npm artifact is public.
+        description: >-
+          Embeddable viewer for a GraphQL schema, used in the Gloo developer portal UI to render
+          the stitched schema a Gloo GraphQL route exposes.
+        note: >-
+          The only standalone UI component Solo.io publishes, and it has not been released since
+          2023-09-01.
+  - name: Internal developer platform integration
+    kind: platform-plugin
+    components:
+      - name: '@solo.io/platform-portal-backstage-plugin-backend'
+        registry: npm
+        version: 0.0.74
+        published: '2026-09-02'
+        url: https://www.npmjs.com/package/@solo.io/platform-portal-backstage-plugin-backend
+        repository: https://github.com/solo-io/platform-portal-backstage-plugin-backend
+        description: >-
+          Backstage BACKEND plugin that synchronises Gloo Platform Portal APIs into the
+          Backstage software catalog, so APIs published through Gloo appear alongside everything
+          else in an organisation's internal developer portal.
+        description_note: >-
+          Backend only. No matching @solo.io Backstage FRONTEND plugin was found on npm, so the
+          catalog entries render with Backstage's stock API-entity UI.
+        ships_with:
+          - a mock-portal-api for local development
+          - a keycloak-realm.json for standing up OIDC locally
+          - end-to-end tests
+loader_libraries: []
+loader_note: >-
+  No script-tag loader, no CDN-hosted widget bundle, no hosted iframe surface. Everything here
+  is an npm dependency or a repository to fork.
+distinct_from_sdks: >-
+  These are client-side and platform-integration surfaces. The client SDK for the Gloo APIs is
+  solo-io/kgateway-client (Go) — see packages/gloo-packages.yml.

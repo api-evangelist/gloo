@@ -1,0 +1,48 @@
+generated: '2026-09-12'
+method: generated
+source: >-
+  Generated from openapi/gloo-portal-server-openapi.yaml and
+  openapi/gloo-portal-idp-connect-openapi.yaml, grounded in conventions/gloo-conventions.yml,
+  errors/gloo-problem-types.yml and data-model/gloo-data-model.yml. A search of the solo-io
+  GitHub organization on 2026-09-12 found no provider-published Agent Skill or AGENTS.md for
+  the Gloo APIs (7 SKILL.md files exist in the org, all internal repo-maintenance or
+  webinar-demo skills unrelated to calling these APIs), so these are authored by API
+  Evangelist, not by Solo.io.
+provider: Gloo
+providerId: gloo
+description: >-
+  Packaged Agent Skills for the Gloo Portal API. Every operationId referenced was verified
+  against the published contracts; nothing is invented. Each skill carries the conventions that
+  actually bite on this API — no idempotency, no pagination, 404-on-empty-list, and secret
+  values that are returned exactly once.
+skills:
+  - name: gloo-onboard-developer-to-api-product
+    file: gloo-onboard-developer-to-api-product.md
+    api: gloo:gloo-portal
+    operations: 7
+    mutating: true
+    summary: Team → Application → Subscription → API key, with the approval and 409 handling the flow really requires.
+  - name: gloo-rotate-portal-credentials
+    file: gloo-rotate-portal-credentials.md
+    api: gloo:gloo-portal
+    operations: 8
+    mutating: true
+    summary: >-
+      Credential rotation, including the finding that the OAuth path cannot be done without a
+      gap because GenerateApplicationOAuthCredential 409s while a credential exists.
+  - name: gloo-audit-portal-access
+    file: gloo-audit-portal-access.md
+    api: gloo:gloo-portal
+    operations: 11
+    mutating: false
+    summary: Read-only access audit across teams, members, apps, credentials and subscriptions.
+not_covered:
+  - api: gloo:gloo-gateway
+    reason: >-
+      The AI Gateway guardrail webhook is a contract the operator IMPLEMENTS, not one an agent
+      calls. There is no client flow to package.
+  - api: gloo:gloo-edge
+    reason: >-
+      Gloo Edge has no HTTP management API. Its surface is Kubernetes CRDs, two gRPC services
+      (grpc/) and the glooctl CLI (cli/gloo-cli.yml) — none of which is an OpenAPI operation to
+      ground a skill in.
