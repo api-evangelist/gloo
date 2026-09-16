@@ -44,7 +44,6 @@ tags:
   - API Gateway
   - Cloud-Native
   - Developer Portal
-  - Developer Tools
   - Envoy
   - Istio
   - Kubernetes
@@ -67,144 +66,361 @@ created: '2026-03-18'
 modified: '2026-09-12'
 specificationVersion: '0.23'
 apis:
-  - aid: gloo:gloo-edge
-    name: Gloo Edge
-    description: >-
-      Gloo Edge is a feature-rich, Kubernetes-native ingress controller and
-      API gateway built on Envoy Proxy, supporting advanced routing,
-      security policies, and observability for cloud-native workloads.
-      It provides traffic management features such as rate limiting,
-      transformation, and WebAssembly-based extensibility.
-    humanURL: https://docs.solo.io/gloo-edge/latest/
-    baseURL: https://docs.solo.io/gloo-edge/latest/
-    tags:
-      - API Gateway
-      - Envoy
-      - Kubernetes
-      - Open-Source
-    tags_raw:
-      - API Gateway
-      - Envoy
-      - Kubernetes
-      - Open Source
-    properties:
-      - type: Documentation
-        url: https://docs.solo.io/gloo-edge/latest/
-      - type: GettingStarted
-        url: https://docs.solo.io/gloo-edge/latest/getting_started/
-      - type: Reference
-        url: https://docs.solo.io/gloo-edge/latest/reference/
-      - type: ChangeLog
-        url: https://docs.solo.io/gloo-edge/latest/reference/changelog/
-      - type: GitHubRepository
-        url: https://github.com/solo-io/gloo
-      - type: Protobuf
-        url: grpc/gloo-gloo-validation.proto
-      - type: Protobuf
-        url: grpc/gloo-proxy-endpoint.proto
-      - type: CLI
-        url: cli/gloo-cli.yml
-  - aid: gloo:gloo-gateway
-    name: Gloo Gateway
-    description: >-
-      Gloo Gateway is the next-generation API gateway from Solo.io built on
-      Envoy Proxy and implementing the Kubernetes Gateway API specification.
-      It provides advanced traffic management, security, and extensibility for
-      modern cloud-native applications with first-class support for AI and LLM
-      traffic routing.
-    humanURL: https://www.solo.io/products/kgateway
-    baseURL: https://docs.solo.io/gateway/latest/
-    tags:
-      - API Gateway
-      - Cloud-Native
-      - Envoy
-      - Kubernetes Gateway API
-    tags_raw:
-      - API Gateway
-      - Cloud Native
-      - Envoy
-      - Kubernetes Gateway API
-    properties:
-      - type: Documentation
-        url: https://docs.solo.io/gateway/latest/
-      - type: GettingStarted
-        url: https://docs.solo.io/gateway/latest/quickstart/
-      - type: Reference
-        url: https://docs.solo.io/gateway/latest/reference/
-      - type: ChangeLog
-        url: https://docs.solo.io/gateway/latest/reference/changelog/
-      - type: GitHubRepository
-        url: https://github.com/solo-io/gloo
-      - type: APIReference
-        url: https://docs.solo.io/gateway/latest/reference/api/
-      - type: OpenAPI
-        url: openapi/gloo-ai-gateway-guardrail-webhook-openapi.yaml
-      - type: Webhooks
-        url: asyncapi/gloo-webhooks.yml
-      - type: Overlay
-        url: overlays/gloo-ai-guardrail-webhook-overlay.yaml
-  - aid: gloo:gloo-mesh
-    name: Gloo Mesh
-    description: >-
-      Gloo Mesh is an enterprise service mesh management platform from Solo.io
-      built on Istio, providing multi-cluster and multi-mesh traffic management,
-      security policy enforcement, and observability across hybrid cloud
-      environments. It simplifies service mesh operations with a unified control
-      plane and policy management interface.
-    humanURL: https://www.solo.io/products/istio
-    baseURL: https://docs.solo.io/gloo-mesh-enterprise/latest/
-    tags:
-      - Istio
-      - Kubernetes
-      - Multi-Cluster
-      - Service Mesh
-    properties:
-      - type: Documentation
-        url: https://docs.solo.io/gloo-mesh-enterprise/latest/
-      - type: GettingStarted
-        url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
-      - type: Reference
-        url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
-      - type: ChangeLog
-        url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
-      - type: OpenAPI
-        url: openapi/gloo-platform-portal-openapi.yaml
-      - type: Overlay
-        url: overlays/gloo-platform-portal-overlay.yaml
-  - aid: gloo:gloo-portal
-    name: Gloo Portal
-    description: >-
-      Gloo Portal is a developer portal product from Solo.io that enables
-      organizations to expose, document, and manage API products for internal
-      and external consumers. It integrates with Gloo Gateway to provide
-      self-service API discovery, subscription management, and usage analytics
-      for API consumers.
-    humanURL: https://docs.solo.io/gateway/latest/portal/
-    baseURL: https://docs.solo.io/gateway/latest/portal/
-    tags:
-      - API Discovery
-      - API Management
-      - Developer Portal
-      - Kubernetes
-    properties:
-      - type: Documentation
-        url: https://docs.solo.io/gateway/latest/portal/
-      - type: GettingStarted
-        url: https://docs.solo.io/gateway/latest/portal/tutorials/
-      - type: APIReference
-        url: https://docs.solo.io/gateway/latest/portal/openapi/
-      - type: OpenAPI
-        url: openapi/gloo-portal-server-openapi.yaml
-      - type: OpenAPI
-        url: openapi/gloo-portal-idp-connect-openapi.yaml
-      - type: Overlay
-        url: overlays/gloo-portal-server-overlay.yaml
-      - type: Overlay
-        url: overlays/gloo-idp-connect-overlay.yaml
-      - type: AgentSkill
-        url: skills/_index.yml
-      - type: DataModel
-        url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-edge
+  name: Gloo Edge
+  description: >-
+    Gloo Edge is a feature-rich, Kubernetes-native ingress controller and API gateway built on Envoy Proxy,
+    supporting advanced routing, security policies, and observability for cloud-native workloads. It provides
+    traffic management features such as rate limiting, transformation, and WebAssembly-based extensibility.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - API Gateway
+  - Envoy
+  - Kubernetes
+  - Open-Source
+  tags_raw:
+  - API Gateway
+  - Envoy
+  - Kubernetes
+  - Open Source
+  properties:
+  - type: Documentation
+    url: https://docs.solo.io/gloo-edge/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-edge/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-edge/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-edge/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: Protobuf
+    url: grpc/gloo-gloo-validation.proto
+  - type: Protobuf
+    url: grpc/gloo-proxy-endpoint.proto
+  - type: CLI
+    url: cli/gloo-cli.yml
+- aid: gloo:gloo-api-products-api
+  name: Gloo API Products API
+  description: The API Products API from Gloo — 3 operation(s) for api products.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - API Products
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-api-products-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-apis-api
+  name: Gloo AP Is API
+  description: The APIs API from Gloo — 5 operation(s) for apis.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-apis-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-applications-api
+  name: Gloo Applications API
+  description: The Applications API from Gloo — 8 operation(s) for applications.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - Applications
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-applications-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-me-api
+  name: Gloo Me API
+  description: The Me API from Gloo — 1 operation(s) for me.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - Me
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-me-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-subscriptions-api
+  name: Gloo Subscriptions API
+  description: The Subscriptions API from Gloo — 2 operation(s) for subscriptions.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-subscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-teams-api
+  name: Gloo Teams API
+  description: The Teams API from Gloo — 5 operation(s) for teams.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-teams-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-user-api
+  name: Gloo User API
+  description: The User API from Gloo — 1 operation(s) for user.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-user-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-webhooks-api
+  name: Gloo Webhooks API
+  description: The Webhooks API from Gloo — 2 operation(s) for webhooks.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
 common:
   - type: Authentication
     url: authentication/gloo-authentication.yml
