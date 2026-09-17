@@ -141,46 +141,6 @@ apis:
     url: https://docs.solo.io/gateway/latest/portal/openapi/
   - type: DataModel
     url: data-model/gloo-data-model.yml
-- aid: gloo:gloo-apis-api
-  name: Gloo AP Is API
-  description: The APIs API from Gloo — 5 operation(s) for apis.
-  humanURL: https://docs.solo.io/gloo-edge/latest/
-  baseURL: https://docs.solo.io/gloo-edge/latest/
-  tags:
-  - APIs
-  properties:
-  - type: OpenAPI
-    url: openapi/gloo-apis-api-openapi.yml
-  - type: Documentation
-    url: https://docs.solo.io/gateway/latest/
-  - type: GettingStarted
-    url: https://docs.solo.io/gateway/latest/quickstart/
-  - type: Reference
-    url: https://docs.solo.io/gateway/latest/reference/
-  - type: ChangeLog
-    url: https://docs.solo.io/gateway/latest/reference/changelog/
-  - type: GitHubRepository
-    url: https://github.com/solo-io/gloo
-  - type: APIReference
-    url: https://docs.solo.io/gateway/latest/reference/api/
-  - type: Webhooks
-    url: asyncapi/gloo-webhooks.yml
-  - type: Documentation
-    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
-  - type: GettingStarted
-    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
-  - type: Reference
-    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
-  - type: ChangeLog
-    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
-  - type: Documentation
-    url: https://docs.solo.io/gateway/latest/portal/
-  - type: GettingStarted
-    url: https://docs.solo.io/gateway/latest/portal/tutorials/
-  - type: APIReference
-    url: https://docs.solo.io/gateway/latest/portal/openapi/
-  - type: DataModel
-    url: data-model/gloo-data-model.yml
 - aid: gloo:gloo-applications-api
   name: Gloo Applications API
   description: The Applications API from Gloo — 8 operation(s) for applications.
@@ -391,6 +351,46 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/gloo-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/quickstart/
+  - type: Reference
+    url: https://docs.solo.io/gateway/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gateway/latest/reference/changelog/
+  - type: GitHubRepository
+    url: https://github.com/solo-io/gloo
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/reference/api/
+  - type: Webhooks
+    url: asyncapi/gloo-webhooks.yml
+  - type: Documentation
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/
+  - type: GettingStarted
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/
+  - type: Reference
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/
+  - type: ChangeLog
+    url: https://docs.solo.io/gloo-mesh-enterprise/latest/reference/changelog/
+  - type: Documentation
+    url: https://docs.solo.io/gateway/latest/portal/
+  - type: GettingStarted
+    url: https://docs.solo.io/gateway/latest/portal/tutorials/
+  - type: APIReference
+    url: https://docs.solo.io/gateway/latest/portal/openapi/
+  - type: DataModel
+    url: data-model/gloo-data-model.yml
+- aid: gloo:gloo-apis-api
+  name: Gloo AP Is API
+  description: The APIs API from Gloo — 5 operation(s) for apis.
+  humanURL: https://docs.solo.io/gloo-edge/latest/
+  baseURL: https://docs.solo.io/gloo-edge/latest/
+  tags:
+  - APIs
+  properties:
+  - type: OpenAPI
+    url: openapi/gloo-apis-api-openapi.yml
   - type: Documentation
     url: https://docs.solo.io/gateway/latest/
   - type: GettingStarted
