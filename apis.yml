@@ -147,6 +147,8 @@ apis:
   humanURL: https://docs.solo.io/gloo-edge/latest/
   baseURL: https://docs.solo.io/gloo-edge/latest/
   tags:
+  - Application
+  tags_raw:
   - Applications
   properties:
   - type: OpenAPI
@@ -227,6 +229,8 @@ apis:
   humanURL: https://docs.solo.io/gloo-edge/latest/
   baseURL: https://docs.solo.io/gloo-edge/latest/
   tags:
+  - Subscription
+  tags_raw:
   - Subscriptions
   properties:
   - type: OpenAPI
@@ -267,6 +271,8 @@ apis:
   humanURL: https://docs.solo.io/gloo-edge/latest/
   baseURL: https://docs.solo.io/gloo-edge/latest/
   tags:
+  - Team
+  tags_raw:
   - Teams
   properties:
   - type: OpenAPI
@@ -347,6 +353,8 @@ apis:
   humanURL: https://docs.solo.io/gloo-edge/latest/
   baseURL: https://docs.solo.io/gloo-edge/latest/
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
@@ -386,7 +394,8 @@ apis:
   description: The APIs API from Gloo — 5 operation(s) for apis.
   humanURL: https://docs.solo.io/gloo-edge/latest/
   baseURL: https://docs.solo.io/gloo-edge/latest/
-  tags:
+  tags: []
+  tags_raw:
   - APIs
   properties:
   - type: OpenAPI
