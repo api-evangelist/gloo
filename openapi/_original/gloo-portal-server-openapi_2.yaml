@@ -1,3 +1,5 @@
+# x-archived-from: gloo-portal-server-openapi.yaml
+# x-archived-on: 2026-09-16
 info:
   title: 'Gloo Portal Server API'
   version: 1.0.0

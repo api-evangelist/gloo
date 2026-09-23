@@ -1,0 +1,191 @@
+openapi: 3.2.0
+info:
+  title: Gloo Portal Server API Products API
+  version: 1.0.0
+  description: Review the following reference documentation for the Gloo portal server APIs, which has the endpoint specifications for managing user access to both the developer portal and resources exposed by the portal.
+servers:
+- url: http://portal.example.com/v1
+tags:
+- name: API Products
+paths:
+  /api-products:
+    get:
+      description: 'Retrieve a list of all API product summaries accessible to user.
+
+
+        This will return the list of summaries for all API products.'
+      operationId: ListApiProducts
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/APIProductSummary'
+                type: array
+          description: A list of API products summaries accessible to user.
+        '401':
+          description: Unauthorized. The user's identity token is invalid
+        '404':
+          description: No API Products found
+        '500':
+          description: Unexpected error fetching api products
+      security:
+      - identityToken: []
+      tags:
+      - API Products
+      summary: List api products
+      x-summary-source: derived
+  /api-products/{productId}:
+    get:
+      description: Retrieve a specific API product by its ID.
+      operationId: GetApiProductById
+      parameters:
+      - description: The unique identifier of the API product.
+        in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIProduct'
+          description: An API product object.
+        '400':
+          description: Invalid request parameters.
+        '401':
+          description: Unauthorized. The user's identity token is invalid.
+        '403':
+          description: Forbidden. The user's identity token is valid, but the user does not have permission to view the API product.
+        '404':
+          description: API Product not found.
+        '500':
+          description: Unexpected error fetching api product.
+      tags:
+      - API Products
+      summary: Get api product by id
+      x-summary-source: derived
+  /api-products/{productId}/versions:
+    get:
+      description: Retrieve all versions for a specific API product.
+      operationId: ListProductVersions
+      parameters:
+      - description: The unique identifier of the API product.
+        in: path
+        name: productId
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/ProductVersion'
+                type: array
+          description: A list of product versions for the specified API product.
+        '400':
+          description: Invalid request parameters.
+        '401':
+          description: Unauthorized. The user's identity token is invalid.
+        '403':
+          description: Forbidden. The user's identity token is valid, but the user does not have permission to view the API product.
+        '404':
+          description: API Product not found.
+        '500':
+          description: Unexpected error fetching api product.
+      tags:
+      - API Products
+      summary: List product versions
+      x-summary-source: derived
+components:
+  schemas:
+    BaseEntity:
+      properties:
+        createdAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+        deletedAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+        id:
+          example: uuid
+          readOnly: true
+          type: string
+        updatedAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+    APIProductSummary:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          apiKeyEnabled:
+            description: Indicates whether `ApiKey` is enabled as an authentication mechanism for the API product.
+            type: boolean
+          apiProductMetadata:
+            description: Metadata for the API product.
+            type: object
+          description:
+            type: string
+          name:
+            type: string
+          oauthEnabled:
+            description: Indicates whether `OAuth` is enabled as an authentication mechanism for the API product.
+            type: boolean
+          versionsCount:
+            description: The version count of the API product.
+            example: 2
+            type: integer
+        type: object
+    ProductVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          apiProductId:
+            type: string
+          apiSpec:
+            type: object
+          documentation:
+            type: string
+          license:
+            type: string
+          name:
+            type: string
+          productVersionMetadata:
+            description: Metadata for the API product version.
+            type: object
+          termsOfService:
+            type: string
+          title:
+            type: string
+        type: object
+    APIProduct:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          apiProductMetadata:
+            description: Metadata for the API product.
+            type: object
+          contactEmail:
+            type: string
+          description:
+            type: string
+          name:
+            type: string
+        type: object
+  securitySchemes:
+    identityToken:
+      description: id token cookie from the identity provider used to authenticate the user
+      in: cookie
+      name: id_token
+      type: apiKey

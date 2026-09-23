@@ -1,0 +1,58 @@
+{
+  "provider": "gloo",
+  "sources": [
+    "_original/gloo-ai-gateway-guardrail-webhook-openapi.yaml",
+    "_original/gloo-platform-portal-openapi.yaml",
+    "_original/gloo-portal-idp-connect-openapi.yaml",
+    "_original/gloo-portal-server-openapi.yaml"
+  ],
+  "outputs": [
+    "gloo-webhooks-api-openapi.yml",
+    "gloo-apis-api-openapi.yml",
+    "gloo-user-api-openapi.yml",
+    "gloo-applications-api-openapi.yml",
+    "gloo-api-products-api-openapi.yml",
+    "gloo-me-api-openapi.yml",
+    "gloo-subscriptions-api-openapi.yml",
+    "gloo-teams-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "4 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (4 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "gloo-ai-gateway-guardrail-webhook-openapi.yaml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "gloo-ai-gateway-guardrail-webhook-openapi.yaml: declared missing tag: Webhooks",
+    "gloo-platform-portal-openapi.yaml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "gloo-platform-portal-openapi.yaml: declared missing tag: APIs",
+    "gloo-platform-portal-openapi.yaml: declared missing tag: User",
+    "gloo-portal-idp-connect-openapi.yaml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "gloo-portal-idp-connect-openapi.yaml: declared missing tag: Applications",
+    "gloo-portal-server-openapi.yaml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0",
+    "gloo-portal-server-openapi.yaml: declared missing tag: API Products",
+    "gloo-portal-server-openapi.yaml: declared missing tag: Applications",
+    "gloo-portal-server-openapi.yaml: declared missing tag: Me",
+    "gloo-portal-server-openapi.yaml: declared missing tag: Subscriptions",
+    "gloo-portal-server-openapi.yaml: declared missing tag: Teams",
+    "tag 'Applications' spans 2 source specs (gloo-portal-idp-connect-openapi.yaml, gloo-portal-server-openapi.yaml): per-path servers applied",
+    "superseded outputs removed: gloo-ap-is-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 9 total)"
+  ],
+  "skipped": [
+    "_original/gloo-portal-server-openapi_2.yaml: archived document superseded by a larger archived document",
+    "_original/gloo-portal-idp-connect-openapi_2.yaml: archived document superseded by a larger archived document",
+    "_original/gloo-platform-portal-openapi_2.yaml: archived document superseded by a larger archived document",
+    "_original/gloo-ai-gateway-guardrail-webhook-openapi_2.yaml: archived document superseded by a larger archived document",
+    "gloo-ap-is-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gloo-api-products-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gloo-applications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gloo-me-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gloo-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gloo-teams-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gloo-user-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gloo-webhooks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

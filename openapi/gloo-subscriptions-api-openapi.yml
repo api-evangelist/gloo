@@ -1,0 +1,162 @@
+openapi: 3.2.0
+info:
+  title: Gloo Portal Server Subscriptions API
+  version: 1.0.0
+  description: Review the following reference documentation for the Gloo portal server APIs, which has the endpoint specifications for managing user access to both the developer portal and resources exposed by the portal.
+servers:
+- url: http://portal.example.com/v1
+tags:
+- name: Subscriptions
+paths:
+  /subscriptions:
+    get:
+      description: Retrieves a list of subscriptions, filtered by their approval status. Use the `status` query parameter to specify whether to return 'pending', 'approved', or 'rejected' subscriptions. If the user is an administrator, all subscriptions for the specified status will be returned. Otherwise, only the subscriptions belonging to the teams for the given user with the specified status will be returned.
+      operationId: ListSubscriptionsByStatus
+      parameters:
+      - description: Filter subscriptions by status ('pending' for subscriptions awaiting approval, 'approved' for subscriptions that have been approved, 'rejected' for subscriptions that have been denied).
+        in: query
+        name: status
+        required: true
+        schema:
+          enum:
+          - pending
+          - approved
+          - rejected
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Subscription'
+                type: array
+          description: Successfully retrieved list of subscriptions.
+        '400':
+          description: Invalid status parameter.
+        '401':
+          description: Unauthorized. The user's identity token is invalid.
+        '403':
+          description: Unauthorized to view the list.
+        '500':
+          description: Internal server error.
+      summary: List subscriptions filtered by status
+      tags:
+      - Subscriptions
+  /subscriptions/{subscriptionId}:
+    delete:
+      description: Deletes a subscription, revoking the associated application's access to the specified API product.
+      operationId: DeleteApplicationProductSubscription
+      parameters:
+      - description: The unique identifier of the subscription to delete.
+        in: path
+        name: subscriptionId
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Subscription successfully deleted.
+        '400':
+          description: Invalid request parameters.
+        '403':
+          description: Unauthorized to delete subscription.
+        '404':
+          description: Subscription not found.
+        '500':
+          description: Internal server error.
+      summary: Delete subscription
+      tags:
+      - Subscriptions
+components:
+  schemas:
+    BaseEntity:
+      properties:
+        createdAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+        deletedAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+        id:
+          example: uuid
+          readOnly: true
+          type: string
+        updatedAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+    SubscriptionMetadata:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          customMetadata:
+            example:
+              key: value
+            type: object
+          rateLimit:
+            $ref: '#/components/schemas/RateLimit'
+        type: object
+    RateLimit:
+      properties:
+        requestsPerUnit:
+          example: 5
+          type: string
+        unit:
+          enum:
+          - SECOND
+          - MINUTE
+          - HOUR
+          - DAY
+          - MONTH
+          - YEAR
+          example: SECOND
+          type: string
+    Subscription:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          apiProductId:
+            description: The ID of the API product associated with the subscription.
+            type: string
+          applicationId:
+            description: The ID of the application to which the subscription is associated.
+            readOnly: true
+            type: string
+          approved:
+            description: Indicates whether the subscription has been approved.
+            readOnly: true
+            type: boolean
+          approvedAt:
+            description: The timestamp when the subscription was approved.
+            format: date-time
+            readOnly: true
+            type: string
+          metadata:
+            $ref: '#/components/schemas/SubscriptionMetadata'
+          rejected:
+            description: Indicates whether the subscription has been rejected.
+            readOnly: true
+            type: boolean
+          rejectedAt:
+            description: The timestamp when the subscription was rejected.
+            format: date-time
+            readOnly: true
+            type: string
+          requestedAt:
+            description: The timestamp when the subscription was requested.
+            format: date-time
+            readOnly: true
+            type: string
+        type: object
+  securitySchemes:
+    identityToken:
+      description: id token cookie from the identity provider used to authenticate the user
+      in: cookie
+      name: id_token
+      type: apiKey
