@@ -16,9 +16,7 @@
     "gloo-subscriptions-api-openapi.yml",
     "gloo-teams-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -38,16 +36,15 @@
     "gloo-portal-server-openapi.yaml: declared missing tag: Subscriptions",
     "gloo-portal-server-openapi.yaml: declared missing tag: Teams",
     "tag 'Applications' spans 2 source specs (gloo-portal-idp-connect-openapi.yaml, gloo-portal-server-openapi.yaml): per-path servers applied",
-    "superseded outputs removed: gloo-ap-is-api-openapi.yml",
-    "apis.yml register: written (+1 apis, 9 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "_original/gloo-portal-server-openapi_2.yaml: archived document superseded by a larger archived document",
     "_original/gloo-portal-idp-connect-openapi_2.yaml: archived document superseded by a larger archived document",
     "_original/gloo-platform-portal-openapi_2.yaml: archived document superseded by a larger archived document",
     "_original/gloo-ai-gateway-guardrail-webhook-openapi_2.yaml: archived document superseded by a larger archived document",
-    "gloo-ap-is-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "gloo-api-products-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gloo-apis-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "gloo-applications-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "gloo-me-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "gloo-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/",

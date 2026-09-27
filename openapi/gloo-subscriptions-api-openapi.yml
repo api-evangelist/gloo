@@ -70,6 +70,17 @@ paths:
       - Subscriptions
 components:
   schemas:
+    SubscriptionMetadata:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          customMetadata:
+            example:
+              key: value
+            type: object
+          rateLimit:
+            $ref: '#/components/schemas/RateLimit'
+        type: object
     BaseEntity:
       properties:
         createdAt:
@@ -91,17 +102,6 @@ components:
           format: date-time
           readOnly: true
           type: string
-    SubscriptionMetadata:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          customMetadata:
-            example:
-              key: value
-            type: object
-          rateLimit:
-            $ref: '#/components/schemas/RateLimit'
-        type: object
     RateLimit:
       properties:
         requestsPerUnit:

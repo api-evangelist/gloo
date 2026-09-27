@@ -378,17 +378,39 @@ components:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
       - $ref: '#/components/schemas/TeamCreate'
-    ApplicationCreate:
-      description: Create
+    TeamCreate:
+      description: Create a new team
       properties:
         description:
-          example: app description
+          example: team description
           type: string
         name:
-          example: app
+          example: ACME Team
           type: string
       required:
       - name
+    User:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          email:
+            example: johndoe@email.com
+            type: string
+          isAdmin:
+            example: false
+            type: boolean
+          name:
+            example: John Doe
+            type: string
+          synced:
+            example: true
+            type: boolean
+          username:
+            example: johndoe
+            type: string
+        required:
+        - email
+        type: object
     RateLimit:
       properties:
         requestsPerUnit:
@@ -421,6 +443,9 @@ components:
             readOnly: true
             type: string
         type: object
+    TeamUpdate:
+      allOf:
+      - $ref: '#/components/schemas/TeamCreate'
     ApplicationMetadata:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -432,39 +457,14 @@ components:
           rateLimit:
             $ref: '#/components/schemas/RateLimit'
         type: object
-    TeamUpdate:
-      allOf:
-      - $ref: '#/components/schemas/TeamCreate'
-    User:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          email:
-            example: johndoe@email.com
-            type: string
-          isAdmin:
-            example: false
-            type: boolean
-          name:
-            example: John Doe
-            type: string
-          synced:
-            example: true
-            type: boolean
-          username:
-            example: johndoe
-            type: string
-        required:
-        - email
-        type: object
-    TeamCreate:
-      description: Create a new team
+    ApplicationCreate:
+      description: Create
       properties:
         description:
-          example: team description
+          example: app description
           type: string
         name:
-          example: ACME Team
+          example: app
           type: string
       required:
       - name

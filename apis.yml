@@ -48,7 +48,7 @@ tags:
   - Istio
   - Kubernetes
   - Kubernetes Gateway API
-  - Open-Source
+  - Open Source
   - Service Mesh
 tags_raw:
   - API Gateway
@@ -60,6 +60,7 @@ tags_raw:
   - Kubernetes Gateway API
   - Open Source
   - Service Mesh
+  - Open-Source
 url: >-
   https://raw.githubusercontent.com/api-evangelist/gloo/refs/heads/main/apis.yml
 created: '2026-03-18'
@@ -78,12 +79,13 @@ apis:
   - API Gateway
   - Envoy
   - Kubernetes
-  - Open-Source
+  - Open Source
   tags_raw:
   - API Gateway
   - Envoy
   - Kubernetes
   - Open Source
+  - Open-Source
   properties:
   - type: Documentation
     url: https://docs.solo.io/gloo-edge/latest/
@@ -390,7 +392,7 @@ apis:
   - type: DataModel
     url: data-model/gloo-data-model.yml
 - aid: gloo:gloo-apis-api
-  name: Gloo AP Is API
+  name: Gloo APIs API
   description: The APIs API from Gloo — 5 operation(s) for apis.
   humanURL: https://docs.solo.io/gloo-edge/latest/
   baseURL: https://docs.solo.io/gloo-edge/latest/
