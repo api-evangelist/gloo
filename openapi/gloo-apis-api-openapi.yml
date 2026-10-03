@@ -254,32 +254,6 @@ components:
           type: string
           example: apiKeyAuth
       type: object
-    UsagePlanKeys:
-      properties:
-        usagePlan:
-          type: string
-          example: bronze plan
-        apiKeys:
-          type: array
-          items:
-            $ref: '#/components/schemas/APIKey'
-      type: object
-    APIKey:
-      properties:
-        apiKey:
-          description: Is returned only once when the API key is created
-          example: 4f357f4f-cd56-41d2-aca8-301c999bb8a4
-          type: string
-        id:
-          example: ae8261d2-4e16-4a06-b1f3-1af71464a8dd
-          type: string
-        name:
-          example: api-key-name-1
-          type: string
-        metadata:
-          type: object
-          example:
-            key: value
     RateLimitPolicy:
       properties:
         unit:
@@ -342,6 +316,32 @@ components:
             type: customers
             region: us-east-1
       type: object
+    UsagePlanKeys:
+      properties:
+        usagePlan:
+          type: string
+          example: bronze plan
+        apiKeys:
+          type: array
+          items:
+            $ref: '#/components/schemas/APIKey'
+      type: object
+    APIKey:
+      properties:
+        apiKey:
+          description: Is returned only once when the API key is created
+          example: 4f357f4f-cd56-41d2-aca8-301c999bb8a4
+          type: string
+        id:
+          example: ae8261d2-4e16-4a06-b1f3-1af71464a8dd
+          type: string
+        name:
+          example: api-key-name-1
+          type: string
+        metadata:
+          type: object
+          example:
+            key: value
   securitySchemes:
     identityToken:
       type: apiKey

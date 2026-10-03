@@ -104,6 +104,28 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    APIProductSummary:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          apiKeyEnabled:
+            description: Indicates whether `ApiKey` is enabled as an authentication mechanism for the API product.
+            type: boolean
+          apiProductMetadata:
+            description: Metadata for the API product.
+            type: object
+          description:
+            type: string
+          name:
+            type: string
+          oauthEnabled:
+            description: Indicates whether `OAuth` is enabled as an authentication mechanism for the API product.
+            type: boolean
+          versionsCount:
+            description: The version count of the API product.
+            example: 2
+            type: integer
+        type: object
     APIProduct:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -116,6 +138,28 @@ components:
           description:
             type: string
           name:
+            type: string
+        type: object
+    ProductVersion:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          apiProductId:
+            type: string
+          apiSpec:
+            type: object
+          documentation:
+            type: string
+          license:
+            type: string
+          name:
+            type: string
+          productVersionMetadata:
+            description: Metadata for the API product version.
+            type: object
+          termsOfService:
+            type: string
+          title:
             type: string
         type: object
     BaseEntity:
@@ -139,50 +183,6 @@ components:
           format: date-time
           readOnly: true
           type: string
-    ProductVersion:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          apiProductId:
-            type: string
-          apiSpec:
-            type: object
-          documentation:
-            type: string
-          license:
-            type: string
-          name:
-            type: string
-          productVersionMetadata:
-            description: Metadata for the API product version.
-            type: object
-          termsOfService:
-            type: string
-          title:
-            type: string
-        type: object
-    APIProductSummary:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          apiKeyEnabled:
-            description: Indicates whether `ApiKey` is enabled as an authentication mechanism for the API product.
-            type: boolean
-          apiProductMetadata:
-            description: Metadata for the API product.
-            type: object
-          description:
-            type: string
-          name:
-            type: string
-          oauthEnabled:
-            description: Indicates whether `OAuth` is enabled as an authentication mechanism for the API product.
-            type: boolean
-          versionsCount:
-            description: The version count of the API product.
-            example: 2
-            type: integer
-        type: object
   securitySchemes:
     identityToken:
       description: id token cookie from the identity provider used to authenticate the user
