@@ -433,6 +433,9 @@ apis:
   - type: DataModel
     url: data-model/gloo-data-model.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/gloo-capability-edges.yml
+    name: Gloo Business Capability Map
   - type: Authentication
     url: authentication/gloo-authentication.yml
   - type: License
