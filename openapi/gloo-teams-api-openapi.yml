@@ -353,17 +353,6 @@ paths:
       - Teams
 components:
   schemas:
-    TeamCreate:
-      description: Create a new team
-      properties:
-        description:
-          example: team description
-          type: string
-        name:
-          example: ACME Team
-          type: string
-      required:
-      - name
     User:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -386,21 +375,32 @@ components:
         required:
         - email
         type: object
-    ApplicationMetadata:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          customMetadata:
-            example:
-              key: value
-            type: object
-          rateLimit:
-            $ref: '#/components/schemas/RateLimit'
-        type: object
-    Team:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - $ref: '#/components/schemas/TeamCreate'
+    RateLimit:
+      properties:
+        requestsPerUnit:
+          example: 5
+          type: string
+        unit:
+          enum:
+          - SECOND
+          - MINUTE
+          - HOUR
+          - DAY
+          - MONTH
+          - YEAR
+          example: SECOND
+          type: string
+    ApplicationCreate:
+      description: Create
+      properties:
+        description:
+          example: app description
+          type: string
+        name:
+          example: app
+          type: string
+      required:
+      - name
     TeamUpdate:
       allOf:
       - $ref: '#/components/schemas/TeamCreate'
@@ -421,32 +421,6 @@ components:
             readOnly: true
             type: string
         type: object
-    ApplicationCreate:
-      description: Create
-      properties:
-        description:
-          example: app description
-          type: string
-        name:
-          example: app
-          type: string
-      required:
-      - name
-    RateLimit:
-      properties:
-        requestsPerUnit:
-          example: 5
-          type: string
-        unit:
-          enum:
-          - SECOND
-          - MINUTE
-          - HOUR
-          - DAY
-          - MONTH
-          - YEAR
-          example: SECOND
-          type: string
     BaseEntity:
       properties:
         createdAt:
@@ -468,6 +442,32 @@ components:
           format: date-time
           readOnly: true
           type: string
+    TeamCreate:
+      description: Create a new team
+      properties:
+        description:
+          example: team description
+          type: string
+        name:
+          example: ACME Team
+          type: string
+      required:
+      - name
+    Team:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - $ref: '#/components/schemas/TeamCreate'
+    ApplicationMetadata:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          customMetadata:
+            example:
+              key: value
+            type: object
+          rateLimit:
+            $ref: '#/components/schemas/RateLimit'
+        type: object
   securitySchemes:
     identityToken:
       description: id token cookie from the identity provider used to authenticate the user

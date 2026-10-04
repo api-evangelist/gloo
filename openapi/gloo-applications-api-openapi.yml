@@ -472,20 +472,6 @@ paths:
     - url: http://portal.example.com/v1
 components:
   schemas:
-    Error:
-      required:
-      - code
-      - message
-      - reason
-      properties:
-        code:
-          type: integer
-        message:
-          type: string
-          example: Status Code Message
-        reason:
-          type: string
-          example: Error reason
     OAuthApplication:
       required:
       - clientId
@@ -500,25 +486,54 @@ components:
         clientName:
           type: string
           example: example-user-pool-developer-1
-    OAuthCredential:
+    Error:
+      required:
+      - code
+      - message
+      - reason
       properties:
-        id:
-          example: uuid
-          readOnly: true
+        code:
+          type: integer
+        message:
           type: string
-        idpClientId:
-          example: generated-client-id
-          readOnly: true
+          example: Status Code Message
+        reason:
           type: string
-        idpClientName:
-          example: client-name
-          readOnly: true
+          example: Error reason
+    APIKey:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          apiKey:
+            description: Is returned only once when the API key is created
+            example: 4f357f4f-cd56-41d2-aca8-301c999bb8a4
+            type: string
+          id:
+            example: ae8261d2-4e16-4a06-b1f3-1af71464a8dd
+            type: string
+          metadata:
+            example:
+              key: value
+            type: object
+          name:
+            example: api-key-name-1
+            type: string
+        type: object
+    RateLimit:
+      properties:
+        requestsPerUnit:
+          example: 5
           type: string
-        idpClientSecret:
-          example: generated-client-secret
-          readOnly: true
+        unit:
+          enum:
+          - SECOND
+          - MINUTE
+          - HOUR
+          - DAY
+          - MONTH
+          - YEAR
+          example: SECOND
           type: string
-      type: object
     Subscription:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -556,44 +571,6 @@ components:
             readOnly: true
             type: string
         type: object
-    ApplicationUpdate:
-      properties:
-        description:
-          example: the app description
-          type: string
-        name:
-          example: app
-          type: string
-    SubscriptionMetadata:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          customMetadata:
-            example:
-              key: value
-            type: object
-          rateLimit:
-            $ref: '#/components/schemas/RateLimit'
-        type: object
-    ApplicationMetadata:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          customMetadata:
-            example:
-              key: value
-            type: object
-          rateLimit:
-            $ref: '#/components/schemas/RateLimit'
-        type: object
-    SubscriptionCreate:
-      properties:
-        apiProductId:
-          description: The API Product ID that we are subscribing to
-          type: string
-      required:
-      - apiProductId
-      type: object
     Application:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -611,40 +588,6 @@ components:
             readOnly: true
             type: string
         type: object
-    APIKey:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          apiKey:
-            description: Is returned only once when the API key is created
-            example: 4f357f4f-cd56-41d2-aca8-301c999bb8a4
-            type: string
-          id:
-            example: ae8261d2-4e16-4a06-b1f3-1af71464a8dd
-            type: string
-          metadata:
-            example:
-              key: value
-            type: object
-          name:
-            example: api-key-name-1
-            type: string
-        type: object
-    RateLimit:
-      properties:
-        requestsPerUnit:
-          example: 5
-          type: string
-        unit:
-          enum:
-          - SECOND
-          - MINUTE
-          - HOUR
-          - DAY
-          - MONTH
-          - YEAR
-          example: SECOND
-          type: string
     BaseEntity:
       properties:
         createdAt:
@@ -666,6 +609,63 @@ components:
           format: date-time
           readOnly: true
           type: string
+    ApplicationUpdate:
+      properties:
+        description:
+          example: the app description
+          type: string
+        name:
+          example: app
+          type: string
+    OAuthCredential:
+      properties:
+        id:
+          example: uuid
+          readOnly: true
+          type: string
+        idpClientId:
+          example: generated-client-id
+          readOnly: true
+          type: string
+        idpClientName:
+          example: client-name
+          readOnly: true
+          type: string
+        idpClientSecret:
+          example: generated-client-secret
+          readOnly: true
+          type: string
+      type: object
+    SubscriptionCreate:
+      properties:
+        apiProductId:
+          description: The API Product ID that we are subscribing to
+          type: string
+      required:
+      - apiProductId
+      type: object
+    ApplicationMetadata:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          customMetadata:
+            example:
+              key: value
+            type: object
+          rateLimit:
+            $ref: '#/components/schemas/RateLimit'
+        type: object
+    SubscriptionMetadata:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          customMetadata:
+            example:
+              key: value
+            type: object
+          rateLimit:
+            $ref: '#/components/schemas/RateLimit'
+        type: object
   securitySchemes:
     identityToken:
       description: id token cookie from the identity provider used to authenticate the user

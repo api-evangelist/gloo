@@ -248,38 +248,22 @@ paths:
       - APIs
 components:
   schemas:
-    AuthPolicy:
+    APIKey:
       properties:
-        authType:
+        apiKey:
+          description: Is returned only once when the API key is created
+          example: 4f357f4f-cd56-41d2-aca8-301c999bb8a4
           type: string
-          example: apiKeyAuth
-      type: object
-    RateLimitPolicy:
-      properties:
-        unit:
+        id:
+          example: ae8261d2-4e16-4a06-b1f3-1af71464a8dd
           type: string
-          example: MINUTE
-        requestsPerUnit:
-          type: integer
-          example: 1
-      type: object
-    UsagePlan:
-      properties:
         name:
-          example: bronze plan
+          example: api-key-name-1
           type: string
-        authPolicies:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthPolicy'
-        rateLimitPolicy:
-          $ref: '#/components/schemas/RateLimitPolicy'
-        apiIds:
-          type: array
-          items:
-            type: string
-            example: petstoreAPI-petstoreNamespace-cluster-1
-      type: object
+        metadata:
+          type: object
+          example:
+            key: value
     API:
       properties:
         apiId:
@@ -316,6 +300,23 @@ components:
             type: customers
             region: us-east-1
       type: object
+    UsagePlan:
+      properties:
+        name:
+          example: bronze plan
+          type: string
+        authPolicies:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthPolicy'
+        rateLimitPolicy:
+          $ref: '#/components/schemas/RateLimitPolicy'
+        apiIds:
+          type: array
+          items:
+            type: string
+            example: petstoreAPI-petstoreNamespace-cluster-1
+      type: object
     UsagePlanKeys:
       properties:
         usagePlan:
@@ -326,22 +327,21 @@ components:
           items:
             $ref: '#/components/schemas/APIKey'
       type: object
-    APIKey:
+    RateLimitPolicy:
       properties:
-        apiKey:
-          description: Is returned only once when the API key is created
-          example: 4f357f4f-cd56-41d2-aca8-301c999bb8a4
+        unit:
           type: string
-        id:
-          example: ae8261d2-4e16-4a06-b1f3-1af71464a8dd
+          example: MINUTE
+        requestsPerUnit:
+          type: integer
+          example: 1
+      type: object
+    AuthPolicy:
+      properties:
+        authType:
           type: string
-        name:
-          example: api-key-name-1
-          type: string
-        metadata:
-          type: object
-          example:
-            key: value
+          example: apiKeyAuth
+      type: object
   securitySchemes:
     identityToken:
       type: apiKey
