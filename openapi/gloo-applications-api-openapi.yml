@@ -500,6 +500,33 @@ components:
         reason:
           type: string
           example: Error reason
+    SubscriptionMetadata:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          customMetadata:
+            example:
+              key: value
+            type: object
+          rateLimit:
+            $ref: '#/components/schemas/RateLimit'
+        type: object
+    SubscriptionCreate:
+      properties:
+        apiProductId:
+          description: The API Product ID that we are subscribing to
+          type: string
+      required:
+      - apiProductId
+      type: object
+    ApplicationUpdate:
+      properties:
+        description:
+          example: the app description
+          type: string
+        name:
+          example: app
+          type: string
     APIKey:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -519,21 +546,46 @@ components:
             example: api-key-name-1
             type: string
         type: object
-    RateLimit:
+    BaseEntity:
       properties:
-        requestsPerUnit:
-          example: 5
+        createdAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
           type: string
-        unit:
-          enum:
-          - SECOND
-          - MINUTE
-          - HOUR
-          - DAY
-          - MONTH
-          - YEAR
-          example: SECOND
+        deletedAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
           type: string
+        id:
+          example: uuid
+          readOnly: true
+          type: string
+        updatedAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+    OAuthCredential:
+      properties:
+        id:
+          example: uuid
+          readOnly: true
+          type: string
+        idpClientId:
+          example: generated-client-id
+          readOnly: true
+          type: string
+        idpClientName:
+          example: client-name
+          readOnly: true
+          type: string
+        idpClientSecret:
+          example: generated-client-secret
+          readOnly: true
+          type: string
+      type: object
     Subscription:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -571,6 +623,21 @@ components:
             readOnly: true
             type: string
         type: object
+    RateLimit:
+      properties:
+        requestsPerUnit:
+          example: 5
+          type: string
+        unit:
+          enum:
+          - SECOND
+          - MINUTE
+          - HOUR
+          - DAY
+          - MONTH
+          - YEAR
+          example: SECOND
+          type: string
     Application:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -588,74 +655,7 @@ components:
             readOnly: true
             type: string
         type: object
-    BaseEntity:
-      properties:
-        createdAt:
-          example: '2021-08-25T20:00:00Z'
-          format: date-time
-          readOnly: true
-          type: string
-        deletedAt:
-          example: '2021-08-25T20:00:00Z'
-          format: date-time
-          readOnly: true
-          type: string
-        id:
-          example: uuid
-          readOnly: true
-          type: string
-        updatedAt:
-          example: '2021-08-25T20:00:00Z'
-          format: date-time
-          readOnly: true
-          type: string
-    ApplicationUpdate:
-      properties:
-        description:
-          example: the app description
-          type: string
-        name:
-          example: app
-          type: string
-    OAuthCredential:
-      properties:
-        id:
-          example: uuid
-          readOnly: true
-          type: string
-        idpClientId:
-          example: generated-client-id
-          readOnly: true
-          type: string
-        idpClientName:
-          example: client-name
-          readOnly: true
-          type: string
-        idpClientSecret:
-          example: generated-client-secret
-          readOnly: true
-          type: string
-      type: object
-    SubscriptionCreate:
-      properties:
-        apiProductId:
-          description: The API Product ID that we are subscribing to
-          type: string
-      required:
-      - apiProductId
-      type: object
     ApplicationMetadata:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          customMetadata:
-            example:
-              key: value
-            type: object
-          rateLimit:
-            $ref: '#/components/schemas/RateLimit'
-        type: object
-    SubscriptionMetadata:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
       - properties:

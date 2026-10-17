@@ -70,6 +70,53 @@ paths:
       - Subscriptions
 components:
   schemas:
+    BaseEntity:
+      properties:
+        createdAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+        deletedAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+        id:
+          example: uuid
+          readOnly: true
+          type: string
+        updatedAt:
+          example: '2021-08-25T20:00:00Z'
+          format: date-time
+          readOnly: true
+          type: string
+    SubscriptionMetadata:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          customMetadata:
+            example:
+              key: value
+            type: object
+          rateLimit:
+            $ref: '#/components/schemas/RateLimit'
+        type: object
+    RateLimit:
+      properties:
+        requestsPerUnit:
+          example: 5
+          type: string
+        unit:
+          enum:
+          - SECOND
+          - MINUTE
+          - HOUR
+          - DAY
+          - MONTH
+          - YEAR
+          example: SECOND
+          type: string
     Subscription:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -107,53 +154,6 @@ components:
             readOnly: true
             type: string
         type: object
-    SubscriptionMetadata:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          customMetadata:
-            example:
-              key: value
-            type: object
-          rateLimit:
-            $ref: '#/components/schemas/RateLimit'
-        type: object
-    RateLimit:
-      properties:
-        requestsPerUnit:
-          example: 5
-          type: string
-        unit:
-          enum:
-          - SECOND
-          - MINUTE
-          - HOUR
-          - DAY
-          - MONTH
-          - YEAR
-          example: SECOND
-          type: string
-    BaseEntity:
-      properties:
-        createdAt:
-          example: '2021-08-25T20:00:00Z'
-          format: date-time
-          readOnly: true
-          type: string
-        deletedAt:
-          example: '2021-08-25T20:00:00Z'
-          format: date-time
-          readOnly: true
-          type: string
-        id:
-          example: uuid
-          readOnly: true
-          type: string
-        updatedAt:
-          example: '2021-08-25T20:00:00Z'
-          format: date-time
-          readOnly: true
-          type: string
   securitySchemes:
     identityToken:
       description: id token cookie from the identity provider used to authenticate the user

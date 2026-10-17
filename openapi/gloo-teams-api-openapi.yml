@@ -353,43 +353,9 @@ paths:
       - Teams
 components:
   schemas:
-    User:
+    TeamUpdate:
       allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          email:
-            example: johndoe@email.com
-            type: string
-          isAdmin:
-            example: false
-            type: boolean
-          name:
-            example: John Doe
-            type: string
-          synced:
-            example: true
-            type: boolean
-          username:
-            example: johndoe
-            type: string
-        required:
-        - email
-        type: object
-    RateLimit:
-      properties:
-        requestsPerUnit:
-          example: 5
-          type: string
-        unit:
-          enum:
-          - SECOND
-          - MINUTE
-          - HOUR
-          - DAY
-          - MONTH
-          - YEAR
-          example: SECOND
-          type: string
+      - $ref: '#/components/schemas/TeamCreate'
     ApplicationCreate:
       description: Create
       properties:
@@ -401,26 +367,6 @@ components:
           type: string
       required:
       - name
-    TeamUpdate:
-      allOf:
-      - $ref: '#/components/schemas/TeamCreate'
-    Application:
-      allOf:
-      - $ref: '#/components/schemas/BaseEntity'
-      - properties:
-          description:
-            example: app description
-            type: string
-          metadata:
-            $ref: '#/components/schemas/ApplicationMetadata'
-          name:
-            example: app
-            type: string
-          teamId:
-            example: 2frepq0mjp841i3jfd030dhtmn
-            readOnly: true
-            type: string
-        type: object
     BaseEntity:
       properties:
         createdAt:
@@ -457,6 +403,38 @@ components:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
       - $ref: '#/components/schemas/TeamCreate'
+    RateLimit:
+      properties:
+        requestsPerUnit:
+          example: 5
+          type: string
+        unit:
+          enum:
+          - SECOND
+          - MINUTE
+          - HOUR
+          - DAY
+          - MONTH
+          - YEAR
+          example: SECOND
+          type: string
+    Application:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          description:
+            example: app description
+            type: string
+          metadata:
+            $ref: '#/components/schemas/ApplicationMetadata'
+          name:
+            example: app
+            type: string
+          teamId:
+            example: 2frepq0mjp841i3jfd030dhtmn
+            readOnly: true
+            type: string
+        type: object
     ApplicationMetadata:
       allOf:
       - $ref: '#/components/schemas/BaseEntity'
@@ -467,6 +445,28 @@ components:
             type: object
           rateLimit:
             $ref: '#/components/schemas/RateLimit'
+        type: object
+    User:
+      allOf:
+      - $ref: '#/components/schemas/BaseEntity'
+      - properties:
+          email:
+            example: johndoe@email.com
+            type: string
+          isAdmin:
+            example: false
+            type: boolean
+          name:
+            example: John Doe
+            type: string
+          synced:
+            example: true
+            type: boolean
+          username:
+            example: johndoe
+            type: string
+        required:
+        - email
         type: object
   securitySchemes:
     identityToken:

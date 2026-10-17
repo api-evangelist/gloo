@@ -248,6 +248,25 @@ paths:
       - APIs
 components:
   schemas:
+    UsagePlanKeys:
+      properties:
+        usagePlan:
+          type: string
+          example: bronze plan
+        apiKeys:
+          type: array
+          items:
+            $ref: '#/components/schemas/APIKey'
+      type: object
+    RateLimitPolicy:
+      properties:
+        unit:
+          type: string
+          example: MINUTE
+        requestsPerUnit:
+          type: integer
+          example: 1
+      type: object
     APIKey:
       properties:
         apiKey:
@@ -264,6 +283,29 @@ components:
           type: object
           example:
             key: value
+    UsagePlan:
+      properties:
+        name:
+          example: bronze plan
+          type: string
+        authPolicies:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthPolicy'
+        rateLimitPolicy:
+          $ref: '#/components/schemas/RateLimitPolicy'
+        apiIds:
+          type: array
+          items:
+            type: string
+            example: petstoreAPI-petstoreNamespace-cluster-1
+      type: object
+    AuthPolicy:
+      properties:
+        authType:
+          type: string
+          example: apiKeyAuth
+      type: object
     API:
       properties:
         apiId:
@@ -299,48 +341,6 @@ components:
           example:
             type: customers
             region: us-east-1
-      type: object
-    UsagePlan:
-      properties:
-        name:
-          example: bronze plan
-          type: string
-        authPolicies:
-          type: array
-          items:
-            $ref: '#/components/schemas/AuthPolicy'
-        rateLimitPolicy:
-          $ref: '#/components/schemas/RateLimitPolicy'
-        apiIds:
-          type: array
-          items:
-            type: string
-            example: petstoreAPI-petstoreNamespace-cluster-1
-      type: object
-    UsagePlanKeys:
-      properties:
-        usagePlan:
-          type: string
-          example: bronze plan
-        apiKeys:
-          type: array
-          items:
-            $ref: '#/components/schemas/APIKey'
-      type: object
-    RateLimitPolicy:
-      properties:
-        unit:
-          type: string
-          example: MINUTE
-        requestsPerUnit:
-          type: integer
-          example: 1
-      type: object
-    AuthPolicy:
-      properties:
-        authType:
-          type: string
-          example: apiKeyAuth
       type: object
   securitySchemes:
     identityToken:
