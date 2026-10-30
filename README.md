@@ -1,4 +1,4 @@
-# Gloo (gloo)
+# Gloo
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,113 +64,147 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Gloo is a suite of open-source and enterprise API gateway and service mesh products from Solo.io built on Envoy Proxy, offering advanced traffic management, security, observability, and developer portal capabilities for Kubernetes and cloud-native environments.
+Gloo is Solo.io's family of open-source and enterprise API gateway, service mesh and developer portal products, built on Envoy Proxy and Istio and delivered as software the customer runs in their own Kubernetes clusters rather than as a hosted SaaS. Gloo Edge and Gloo Gateway provide ingress, advanced traffic management, external auth, rate limiting, WAF, GraphQL and AI/LLM traffic routing; Gloo Mesh manages multi-cluster Istio; and Gloo Portal publishes API products to internal and external consumers with teams, applications, subscriptions, API keys and OAuth credentials. Solo.io renamed its commercial line in 2026 — Gloo Gateway is now Solo Enterprise for kgateway and Gloo Mesh is now Solo Enterprise for Istio — and the upstream kgateway project is a conformant implementation of the Kubernetes Gateway API, passing 93 of 93 core and extended conformance tests against v1.6.1.
 
-**URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/gloo/refs/heads/main/apis.yml)
+**Areas:** API Gateway · Cloud-Native · Developer Portal · Envoy · Istio · Kubernetes · Kubernetes Gateway API · Open Source · Service Mesh
 
-## Scope
+## Gloo on APIs.io
 
-- **Type:** Index 
-- **Position:** Consuming 
-- **Access:** 3rd-Party 
+Everything profiled for Gloo is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/gloo/](https://apis.io/providers/gloo/)** — or go straight to one of the APIs or properties below.
 
-## Tags:
+### APIs (9)
 
- - API Gateway, Envoy, Kubernetes, Open Source, Service Mesh
+- [Gloo Edge](https://apis.io/apis/gloo/gloo-edge/) — Gloo Edge is a feature-rich, Kubernetes-native ingress controller and API gateway built on Envoy Proxy, supporting advanced routing, security policies, and…
+- [Gloo API Products API](https://apis.io/apis/gloo/gloo-api-products-api/) — The API Products API from Gloo — 3 operation(s) for api products.
+- [Gloo Applications API](https://apis.io/apis/gloo/gloo-applications-api/) — The Applications API from Gloo — 8 operation(s) for applications.
+- [Gloo Me API](https://apis.io/apis/gloo/gloo-me-api/) — The Me API from Gloo — 1 operation(s) for me.
+- [Gloo Subscriptions API](https://apis.io/apis/gloo/gloo-subscriptions-api/) — The Subscriptions API from Gloo — 2 operation(s) for subscriptions.
+- [Gloo Teams API](https://apis.io/apis/gloo/gloo-teams-api/) — The Teams API from Gloo — 5 operation(s) for teams.
+- [Gloo User API](https://apis.io/apis/gloo/gloo-user-api/) — The User API from Gloo — 1 operation(s) for user.
+- [Gloo Webhooks API](https://apis.io/apis/gloo/gloo-webhooks-api/) — The Webhooks API from Gloo — 2 operation(s) for webhooks.
+- [Gloo APIs API](https://apis.io/apis/gloo/gloo-apis-api/) — The APIs API from Gloo — 5 operation(s) for apis.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-03-18 
-- **Modified:** 2026-03-18 
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Gloo Edge
-Gloo Edge is a feature-rich, Kubernetes-native ingress controller and API gateway built on Envoy Proxy, supporting advanced routing, security policies, and observability for cloud-native workloads. It provides traffic management features such as rate limiting, transformation, and WebAssembly-based extensibility.
+Event-driven and webhook contracts.
 
-**Human URL:** [https://www.solo.io/products/gloo-gateway/](https://www.solo.io/products/gloo-gateway/)
+- [Gloo Webhooks](https://apis.io/asyncapis/gloo/gloo-webhooks/)
 
+#### MCP servers (1)
 
-#### Tags:
+Model Context Protocol servers that expose the API to agents.
 
- - API Gateway, Envoy, Kubernetes, Open Source
+- [gloo-mcp.yml](https://apis.io/servers/gloo/gloo-mcp-yml/)
 
-#### Properties
+#### Overlays (4)
 
-- [Documentation](https://docs.solo.io/gloo-edge/latest/)
-- [Getting Started](https://docs.solo.io/gloo-edge/latest/getting_started/)
-- [Reference](https://docs.solo.io/gloo-edge/latest/reference/)
-- [Change Log](https://docs.solo.io/gloo-edge/latest/changelog/)
-- [GitHubRepository](https://github.com/solo-io/gloo)
+OpenAPI overlays, including conversational phrasing for each operation.
 
-### Gloo Gateway
-Gloo Gateway is the next-generation API gateway from Solo.io built on Envoy Proxy and implementing the Kubernetes Gateway API specification. It provides advanced traffic management, security, and extensibility for modern cloud-native applications with first-class support for AI and LLM traffic routing.
+- [Gloo Ai Guardrail Webhook Overlay](https://apis.io/overlays/gloo/gloo-ai-guardrail-webhook-overlay/)
+- [Gloo Idp Connect Overlay](https://apis.io/overlays/gloo/gloo-idp-connect-overlay/)
+- [Gloo Platform Portal Overlay](https://apis.io/overlays/gloo/gloo-platform-portal-overlay/)
+- [Gloo Portal Server Overlay](https://apis.io/overlays/gloo/gloo-portal-server-overlay/)
 
-**Human URL:** [https://www.solo.io/products/gloo-gateway/](https://www.solo.io/products/gloo-gateway/)
+#### Security (4)
 
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags:
+- [Gloo Authentication](https://apis.io/security/gloo/gloo-authentication/)
+- [Gloo Domain Security](https://apis.io/security/gloo/gloo-domain-security/)
+- [Gloo Trust Center](https://apis.io/security/gloo/gloo-trust-center/)
+- [Gloo Vulnerability Disclosure](https://apis.io/security/gloo/gloo-vulnerability-disclosure/)
 
- - API Gateway, Kubernetes Gateway API, Envoy, Cloud Native
+#### Plans and pricing (1)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://docs.solo.io/gateway/latest/)
-- [Getting Started](https://docs.solo.io/gateway/latest/quickstart/)
-- [Reference](https://docs.solo.io/gateway/latest/reference/)
-- [Change Log](https://docs.solo.io/gateway/latest/changelog/)
-- [GitHubRepository](https://github.com/solo-io/gloo)
+- [Gloo Plans Pricing](https://apis.io/plans/gloo/gloo-plans-pricing/)
 
-### Gloo Mesh
-Gloo Mesh is an enterprise service mesh management platform from Solo.io built on Istio, providing multi-cluster and multi-mesh traffic management, security policy enforcement, and observability across hybrid cloud environments. It simplifies service mesh operations with a unified control plane and policy management interface.
+#### Rate limits (1)
 
-**Human URL:** [https://www.solo.io/products/gloo-mesh/](https://www.solo.io/products/gloo-mesh/)
+Published request limits.
 
+- [Gloo Rate Limits](https://apis.io/rate-limits/gloo/gloo-rate-limits/)
 
-#### Tags:
+#### FinOps (1)
 
- - Service Mesh, Istio, Multi-Cluster, Kubernetes
+What the API costs to run, by operation.
 
-#### Properties
+- [Gloo Finops](https://apis.io/finops/gloo/gloo-finops/)
 
-- [Documentation](https://docs.solo.io/gloo-mesh-enterprise/latest/)
-- [Getting Started](https://docs.solo.io/gloo-mesh-enterprise/latest/getting_started/)
-- [Reference](https://docs.solo.io/gloo-mesh-enterprise/latest/reference/)
-- [Change Log](https://docs.solo.io/gloo-mesh-enterprise/latest/changelog/)
+## Where to find this API
 
-### Gloo Portal
-Gloo Portal is a developer portal product from Solo.io that enables organizations to expose, document, and manage API products for internal and external consumers. It integrates with Gloo Gateway to provide self-service API discovery, subscription management, and usage analytics for API consumers.
-
-**Human URL:** [https://www.solo.io/products/gloo-portal/](https://www.solo.io/products/gloo-portal/)
-
-
-#### Tags:
-
- - Developer Portal, API Management, API Discovery, Kubernetes
-
-#### Properties
-
-- [Documentation](https://docs.solo.io/portal/latest/)
-- [Getting Started](https://docs.solo.io/portal/latest/getting_started/)
-- [Reference](https://docs.solo.io/portal/latest/reference/)
-
-## Common Properties
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.solo.io/)
-- [Portal](https://www.solo.io/products/)
 - [Documentation](https://docs.solo.io/)
-- [Getting Started](https://docs.solo.io/gloo-edge/latest/getting_started/)
-- [Blog](https://www.solo.io/blog/)
-- [GitHub Organization](https://github.com/solo-io)
-- [GitHubRepository](https://github.com/solo-io/gloo)
-- [Change Log](https://github.com/solo-io/gloo/releases)
-- [Community](https://slack.solo.io/)
+- [Getting started](https://docs.solo.io/gloo-edge/latest/getting_started/)
+- [API reference](https://docs.solo.io/gateway/latest/reference/api/)
+- [Pricing](https://www.solo.io/pricing)
 - [Support](https://www.solo.io/company/contact/)
-- [Terms of Service](https://www.solo.io/legal/terms-of-service/)
-- [Privacy Policy](https://www.solo.io/legal/privacy-policy/)
+- [Changelog](https://github.com/solo-io/gloo/releases)
+- [Blog](https://www.solo.io/blog/)
+- [Security](https://www.solo.io/security)
+- [Trust centre](https://trust.solo.io/)
+- [Terms of service](https://legal.solo.io/#website-terms-of-use)
+- [Privacy policy](https://legal.solo.io/#privacy-policy)
+- [GitHub](https://github.com/solo-io)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
+**Kin Score 56.3** — strong · rubric 0.25.0 · scored 2026-10-23
 
-**Email:** kin@apievangelist.com
+| Facet | Score |
+|---|---|
+| Discoverability | 78.6 |
+| Contract quality | 58.5 |
+| Contract governance | 18.2 |
+| Operational transparency | 44.7 |
+| Developer ergonomics | 80.4 |
+| Access clarity | 28.9 |
+
+**Agent readiness 34.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | yes |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 31.4** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/gloo/](https://apis.io/providers/gloo/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Gloo: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/gloo/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
